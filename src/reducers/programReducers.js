@@ -3,9 +3,14 @@ import {
   PROGRAM_DETAIL_REQUEST,
   PROGRAM_DETAIL_SUCCESS,
   PROGRAM_DETAIL_FAIL,
+
   PROGRAM_LIST_REQUEST,
   PROGRAM_LIST_SUCCESS,
   PROGRAM_LIST_FAIL,
+
+  LEVEL_DELETE_REQUEST,
+LEVEL_DELETE_SUCCESS,
+LEVEL_DELETE_FAIL
   
 } from "../constants/programConstants";
 // export above constants from the separate file
@@ -38,6 +43,25 @@ export const programDetailReducer = (state = { program: {} }, action) => {
         return { loading: false, program: action.payload };
   
       case PROGRAM_DETAIL_FAIL:
+        return { loading: false, error: action.payload };
+  
+      default:
+        return state;
+    }
+  };
+
+
+
+
+  export const levelDeleteReducer = (state = {}, action) => {
+    switch (action.type) {
+      case LEVEL_DELETE_REQUEST:
+        return { loading: true};
+  
+      case LEVEL_DELETE_SUCCESS:
+        return { loading: false, success:true};
+  
+      case LEVEL_DELETE_FAIL:
         return { loading: false, error: action.payload };
   
       default:

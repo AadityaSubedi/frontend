@@ -13,17 +13,13 @@ function SubjectScreen() {
 
   return (
     <div>
+      <p>Page {pageNumber} of {numPages}</p>
       <Document
         file="/files/maths.pdf" // hardcoded just for testing 
         onLoadSuccess={onDocumentLoadSuccess}
       >
         <Page pageNumber={pageNumber} />
       </Document>
-      <p>Page {pageNumber} of {numPages}</p>
-
-      <p>
-          <h1>Under Construction</h1>
-      </p>
     </div>
   );
 }

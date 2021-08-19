@@ -6,6 +6,11 @@ import {
   PROGRAM_DETAIL_REQUEST,
   PROGRAM_DETAIL_SUCCESS,
   PROGRAM_DETAIL_FAIL,
+
+  LEVEL_DELETE_REQUEST,
+  LEVEL_DELETE_SUCCESS,
+  LEVEL_DELETE_FAIL,
+
 } from "../constants/programConstants";
 
 import axios from "axios";
@@ -49,3 +54,47 @@ export const listProgramDetail = (code) => async (dispatch) => {
     });
   }
 };
+
+
+export const deleteLevel = (id) => async (dispatch, getState) => {
+  try {
+      dispatch({
+          type: LEVEL_DELETE_REQUEST
+      })
+
+      const {
+          userLogin: { userInfo },
+      } = getState()
+
+      const config = {
+          headers: {
+              'Content-type': 'application/json',
+              Authorization: `Bearer ${userInfo.token}`
+          }
+      }
+
+      const { data } = await axios.delete(
+          `/api/level/${id}`,
+          config
+      )
+
+      dispatch({
+          type: LEVEL_DELETE_SUCCESS,
+      })
+
+
+  } catch (error) {
+      dispatch({
+          type: LEVEL_DELETE_FAIL,
+          payload: error.response && error.response.data.detail
+              ? error.response.data.detail
+              : error.message,
+      })
+  }
+}
+
+
+
+
+
+

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Col,
   Row,
@@ -17,18 +17,21 @@ import Loader from "../components/Loader";
 import Message from "../components/Message";
 function ProgramScreen({ match }) {
   let code = match.params.code;
-  let gobackto = "";
-  gobackto = code.startsWith("B") ? "/BE" : "/M.Sc";
+  let gobackto = "/level";
+  gobackto += code.startsWith("B") ? "/BE" : "/M.Sc";
   // make this dynamic : ahile lai hardcoded xa 
   const number2word = ["", "First", "Second", "Third", "Fourth", "Fifth"];
 
   const dispatch = useDispatch();
   const programDetail = useSelector((state) => state.programDetail);
   const { error, loading, program } = programDetail;
+  let reference = useRef();
+
+
 
   useEffect(() => {
     dispatch(listProgramDetail(code));
-  }, [dispatch, code]);
+  }, [dispatch,code]);
 
   return (
     // null&&
@@ -47,7 +50,7 @@ function ProgramScreen({ match }) {
             IOE Syllabus of {program.name} ({program.code})
           </h1>
           <Col md={6}>
-            <Image src={`/images/${program.image}`} alt={program.name} fluid />
+            <Image src={`/images/${program.image}`} alt={program.name}  />
           </Col>
           <Col md={6}>
             <ListGroup variant="flush">
@@ -55,7 +58,7 @@ function ProgramScreen({ match }) {
             </ListGroup>
           </Col>
 
-          <Accordion defaultActiveKey="1" flush >
+          <Accordion defaultActiveKey="1" flush ref ={reference} >
             {program.semesters &&
               Object.keys(program.semesters).map((key, index) => (
                 <Accordion.Item eventKey={key} key={key}>
@@ -71,10 +74,12 @@ function ProgramScreen({ match }) {
                         <>
                           <Link
                             to={`/subject/${item.code}`}
-                            style={{ "textD ecoration": "none" }}
+                            style={{ "textDecoration": "none" }}
                           >
-                            <ListGroup.Item key={item.code} action>
-                              {index + 1}. {item.name} [{item.code}]
+                            <ListGroup.Item
+                             key={item.code} 
+                             action>
+                              {index + 1}.{item.name} [{item.code}]
                             </ListGroup.Item>
                           </Link>
                         </>
