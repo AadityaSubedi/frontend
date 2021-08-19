@@ -1,4 +1,8 @@
 import {
+  LEVEL_LIST_REQUEST,
+  LEVEL_LIST_SUCCESS,
+  LEVEL_LIST_FAIL,
+
   PROGRAM_LIST_REQUEST,
   PROGRAM_LIST_SUCCESS,
   PROGRAM_LIST_FAIL,
@@ -14,14 +18,38 @@ import {
 } from "../constants/programConstants";
 
 import axios from "axios";
-export const listPrograms = () => async (dispatch) => {
+export const listLevels = (level) => async (dispatch) => {
+  try {
+    dispatch({ type: LEVEL_LIST_REQUEST });
+    const { data } = await axios.get(`/api/levels`);
+
+    dispatch({
+      type: LEVEL_LIST_SUCCESS,
+      payload: data['data'],
+    });
+  } catch (error) {
+    dispatch({
+      type: LEVEL_LIST_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+
+
+
+
+export const listPrograms = (level) => async (dispatch) => {
   try {
     dispatch({ type: PROGRAM_LIST_REQUEST });
-    const { data } = await axios.get("/api/levels");
+    const { data } = await axios.get(`/api/level/${level}`);
 
     dispatch({
       type: PROGRAM_LIST_SUCCESS,
-      payload: data['data'],
+      payload: data['data']['programs'],
     });
   } catch (error) {
     dispatch({

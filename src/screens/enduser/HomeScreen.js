@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from "react";
 
 import { Row, Col } from "react-bootstrap";
-import CardView from "../components/CardView";
+import CardView from "../../components/CardView";
 
 import { useDispatch, useSelector } from "react-redux";
-import { listPrograms } from "../actions/programActions";
+import { listLevels } from "../../actions/programActions";
 import { Link } from "react-router-dom";
-import Loader from "../components/Loader";
-import Message from "../components/Message";
+import Loader from "../../components/Loader";
+import Message from "../../components/Message";
 
 
 
 function HomeScreen() {
   const dispatch = useDispatch();
-  const programList = useSelector((state) => state.programList);
-  const { error, loading, programs: levels } = programList;
+  const levelList = useSelector((state) => state.levelList);
+  const { error, loading,  levels } = levelList;
 
   useEffect(() => {
-    dispatch(listPrograms());
+    dispatch(listLevels());
   }, [dispatch]);
 
   return (

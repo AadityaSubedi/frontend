@@ -2,13 +2,14 @@ import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import {
-  programListReducer,
+  levelListReducer,
   programDetailReducer,
-  levelDeleteReducer
+  levelDeleteReducer,
+  programListReducer
 } from "./reducers/programReducers";
 import { userLoginReducer, userListReducer } from "./reducers/userReducers";
-
 const reducer = combineReducers({
+  levelList: levelListReducer,
   programList: programListReducer,
   programDetail: programDetailReducer,
   userLogin: userLoginReducer,
@@ -16,15 +17,19 @@ const reducer = combineReducers({
   levelDelete: levelDeleteReducer,
 });
 
-const userInfoFromStorage = localStorage.getItem("userInfo")
-  ? JSON.parse(localStorage.getItem("userInfo"))
-  : null;
 
-const initialState = {
-  userLogin: {
-    userInfo: userInfoFromStorage,
-  },
-};
+
+const userInfoFromStorage = localStorage.getItem("userInfo")
+? JSON.parse(localStorage.getItem("userInfo"))
+: null;
+
+// const dispatch = useDispatch()
+  const initialState = {
+    userLogin: {
+      userInfo: userInfoFromStorage,
+    },
+  };
+// dispatch(listPrograms());
 
 const middleware = [thunk];
 

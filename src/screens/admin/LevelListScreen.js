@@ -5,14 +5,14 @@ import React, { useEffect, useState } from "react";
 import { LinkContainer } from "react-router-bootstrap";
 import { Button, Table, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { listUsers } from "../actions/userActions";
-import { listPrograms, deleteLevel } from "../actions/programActions";
+import { listUsers } from "../../actions/userActions";
+import { listLevels as listPrograms, deleteLevel } from "../../actions/programActions";
 
-import Loader from "../components/Loader";
-import Message from "../components/Message";
-import FormContainer from "../components/FormContainer";
+import Loader from "../../components/Loader";
+import Message from "../../components/Message";
+import FormContainer from "../../components/FormContainer";
 import { render } from "@testing-library/react";
-import { ModalView } from "../components/ModalView";
+import { ModalView } from "../../components/ModalView";
 import { Modal } from "bootstrap";
 
 function LevelListScreen({ history, match }) {

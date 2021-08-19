@@ -12,9 +12,9 @@ import { Link } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { listProgramDetail } from "../actions/programActions";
-import Loader from "../components/Loader";
-import Message from "../components/Message";
+import { listProgramDetail } from "../../actions/programActions";
+import Loader from "../../components/Loader";
+import Message from "../../components/Message";
 function ProgramScreen({ match }) {
   let code = match.params.code;
   let gobackto = "/level";

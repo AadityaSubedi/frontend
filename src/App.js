@@ -2,14 +2,14 @@
 import { Container } from 'react-bootstrap'
 import Header from './components/Header'
 import Footer from './components/Footer'
-import HomeScreen from './screens/HomeScreen'
+import HomeScreen from './screens/enduser/HomeScreen'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import ProgramScreen from './screens/ProgramScreen'
-import LevelScreen from './screens/LevelScreen'
-import SubjectScreen from './screens/SubjectScreen'
-import LoginScreen from './screens/LoginScreen'
-import UserListScreen from './screens/UserListScreen'
-import LevelListScreen from './screens/LevelListScreen'
+import ProgramScreen from './screens/enduser/ProgramScreen'
+import LevelScreen from './screens/enduser/LevelScreen'
+import SubjectScreen from './screens/enduser/SubjectScreen'
+import LoginScreen from './screens/admin/LoginScreen'
+import UserListScreen from './screens/admin/UserListScreen'
+import LevelListScreen from './screens/admin/LevelListScreen'
 
 
 function App() {
