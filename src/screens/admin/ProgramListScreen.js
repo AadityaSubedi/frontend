@@ -26,19 +26,19 @@ function ProgramListScreen({ history, match }) {
 
   let levelCode = match.params.code 
 
-  const programCreate = useSelector((state) => state.programCreate);
-  const {
-    loading: loadingCreate,
-    error: errorCreate,
-    success: successCreate,
-    program: createdProgram,
-  } = programCreate;
-  const programDelete = useSelector((state) => state.programDelete);
-  const {
-    loading: loadingDelete,
-    error: errorDelete,
-    success: successDelete,
-  } = programDelete;
+//   const programCreate = useSelector((state) => state.programCreate);
+//   const {
+//     loading: loadingCreate,
+//     error: errorCreate,
+//     success: successCreate,
+//     program: createdProgram,
+//   } = programCreate;
+//   const programDelete = useSelector((state) => state.programDelete);
+//   const {
+//     loading: loadingDelete,
+//     error: errorDelete,
+//     success: successDelete,
+//   } = programDelete;
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -59,7 +59,7 @@ function ProgramListScreen({ history, match }) {
     } else {
       history.push("/login");
     }
-  }, [dispatch, history, userInfo, successCreate, successDelete]);
+  }, [dispatch, history, userInfo])// successCreate, successDelete]);
 
   const createLevelHandler = (level) => {
     // create program here
@@ -79,9 +79,9 @@ function ProgramListScreen({ history, match }) {
           </Button>
         </Col>
       </Row>
-
+{/* 
       {loadingDelete && <Loader />}
-      {errorDelete && <Message variant="danger"> {errorDelete}</Message>}
+      {errorDelete && <Message variant="danger"> {errorDelete}</Message>} */}
 
       {loading ? (
         <Loader />
