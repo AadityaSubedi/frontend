@@ -15,8 +15,10 @@ const reducer = combineReducers({
   levelCreate: levelCreateReducer,
   levelUpdate: levelUpdateReducer,
   
+  
   programList: programListReducer,
   programDetail: programDetailReducer,
+  
   userLogin: userLoginReducer,
   userList: userListReducer,
   levelDelete: levelDeleteReducer,
