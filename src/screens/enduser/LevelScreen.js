@@ -10,36 +10,45 @@ import Loader from "../../components/Loader";
 import Message from "../../components/Message";
 
 function LevelScreen(props) {
+  const dispatch = useDispatch();
+  const programList = useSelector((state) => state.programList);
+  const { error, loading, level:{programs}} = programList;
+ 
+  const { level } = useParams();
 
-    const dispatch = useDispatch();
-    const programList = useSelector((state) => state.programList);
-    const { error, loading,  programs } = programList;
-    const { level } = useParams();
-
-    
   useEffect(() => {
     dispatch(listPrograms(level));
+
   }, [dispatch]);
 
-    return (
-        <div>
-            <Link to ="/" className='btn btn-light my-3'> Go Back</Link>
-            <h1> Programs in {level}</h1>
-            <Row>
-                {programs.map(item=>(
-                    
-                <Col key ={item._id} sm={12} md ={6} lg={4} xl={3}>
+  return (
+    <div>
+      <Link to="/" className="btn btn-light my-3">
+        {" "}
+        Go Back
+      </Link>
+      <h1> Programs in {level}</h1>
 
-                <Link to = {`/program/${item.code}`}>
-                <CardView item = {item} />
+      {loading ? (
+        <Loader />
+      ) : error ? (
+        <Message variant="danger"> {error}</Message>
+      ) : (
+        // null &&
+         (
+          <Row>
+            {programs.map((item) => (
+              <Col key={item._id} sm={12} md={6} lg={4} xl={3}>
+                <Link to={`/program/${item.code}`}>
+                  <CardView item={item} />
                 </Link>
-                </Col>
-                ))
-                }
-            </Row>
-            
-        </div>
-    )
+              </Col>
+            ))}
+          </Row>
+        )
+      )}
+    </div>
+  );
 }
 
-export default LevelScreen
+export default LevelScreen;

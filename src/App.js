@@ -10,6 +10,8 @@ import SubjectScreen from './screens/enduser/SubjectScreen'
 import LoginScreen from './screens/admin/LoginScreen'
 import UserListScreen from './screens/admin/UserListScreen'
 import LevelListScreen from './screens/admin/LevelListScreen'
+import LevelEditScreen from './screens/admin/LevelEditScreen'
+
 
 
 function App() {
@@ -26,6 +28,8 @@ function App() {
         <Route path='/level/:level' component= {LevelScreen} exact/>
         <Route path='/admin/users' component= {UserListScreen} exact/>
         <Route path='/admin/levels' component= {LevelListScreen} exact/>
+        <Route path='/admin/edit/level/:code' component= {LevelEditScreen} exact/>
+
         </Switch>
         </Container>
       </main>

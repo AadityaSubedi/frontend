@@ -12,6 +12,23 @@ import {
   PROGRAM_LIST_SUCCESS,
   PROGRAM_LIST_FAIL,
 
+
+  
+LEVEL_CREATE_REQUEST,
+LEVEL_CREATE_SUCCESS,
+LEVEL_CREATE_FAIL,
+LEVEL_CREATE_RESET,
+
+LEVEL_UPDATE_REQUEST,
+LEVEL_UPDATE_SUCCESS,
+LEVEL_UPDATE_FAIL,
+LEVEL_UPDATE_RESET,
+
+ PROGRAM_CREATE_REVIEW_REQUEST,
+ PROGRAM_CREATE_REVIEW_SUCCESS,
+ PROGRAM_CREATE_REVIEW_FAIL,
+ PROGRAM_CREATE_REVIEW_RESET,
+
   LEVEL_DELETE_REQUEST,
 LEVEL_DELETE_SUCCESS,
 LEVEL_DELETE_FAIL
@@ -35,16 +52,16 @@ export const levelListReducer = (state = { levels: [] }, action) => {
   }
 };
 
-export const programListReducer = (state = { programs: [] }, action) => {
+export const programListReducer = (state = { level :{programs:[]} }, action) => {
   switch (action.type) {
     case PROGRAM_LIST_REQUEST:
-      return { loading: true, programs: [] };
+      return { loading: true,level :{programs:[]} };
 
     case PROGRAM_LIST_SUCCESS:
-      return { loading: false, programs: action.payload };
+      return { loading: false, level: action.payload };
 
     case PROGRAM_LIST_FAIL:
-      return { loading: false, error: action.payload };
+      return { loading: false, level :{programs:[]},error: action.payload };
 
     default:
       return state;
@@ -88,3 +105,49 @@ export const programDetailReducer = (state = { program: {} }, action) => {
         return state;
     }
   };
+
+
+  
+export const levelCreateReducer = (state = {}, action) => {
+  switch (action.type) {
+      case LEVEL_CREATE_REQUEST:
+          return { loading: true }
+
+      case LEVEL_CREATE_SUCCESS:
+          return { loading: false, success: true, level: action.payload }
+
+      case LEVEL_CREATE_FAIL:
+          return { loading: false, error: action.payload }
+
+      case LEVEL_CREATE_RESET:
+          return {}
+
+      default:
+          return state
+  }
+}
+
+
+
+
+  
+export const levelUpdateReducer = (state = { level: {} }, action) => {
+  switch (action.type) {
+      case LEVEL_UPDATE_REQUEST:
+          return { loading: true }
+
+      case LEVEL_UPDATE_SUCCESS:
+          return { loading: false, success: true, level: action.payload }
+
+      case LEVEL_UPDATE_FAIL:
+          return { loading: false, error: action.payload }
+
+      case LEVEL_UPDATE_RESET:
+          return { product: {} }
+
+      default:
+          return state
+  }
+}
+
+  

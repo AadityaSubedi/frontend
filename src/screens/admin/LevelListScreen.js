@@ -6,7 +6,11 @@ import { LinkContainer } from "react-router-bootstrap";
 import { Button, Table, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { listUsers } from "../../actions/userActions";
-import { listLevels as listPrograms, deleteLevel } from "../../actions/programActions";
+import {
+  listLevels,
+  deleteLevel,
+  createLevel,
+} from "../../actions/programActions";
 
 import Loader from "../../components/Loader";
 import Message from "../../components/Message";
@@ -17,9 +21,16 @@ import { Modal } from "bootstrap";
 
 function LevelListScreen({ history, match }) {
   const dispatch = useDispatch();
-  const levelList = useSelector((state) => state.programList);
-  const { loading, error, programs } = levelList;
+  const levelList = useSelector((state) => state.levelList);
+  const { loading, error, levels: programs } = levelList;
 
+  const levelCreate = useSelector((state) => state.levelCreate);
+  const {
+    loading: loadingCreate,
+    error: errorCreate,
+    success: successCreate,
+    level: createdLevel,
+  } = levelCreate;
   const levelDelete = useSelector((state) => state.levelDelete);
   const {
     loading: loadingDelete,
@@ -30,45 +41,41 @@ function LevelListScreen({ history, match }) {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const deleteHandler = (programId) => {
-    console.log("fuck off")
     if (window.confirm("Are you sure want to delete this level")) {
       dispatch(deleteLevel(programId));
     }
   };
   useEffect(() => {
     if (userInfo) {
-      dispatch(listPrograms());
+      dispatch(listLevels());
     } else {
       history.push("/login");
     }
-  }, [dispatch, history, userInfo, successDelete]);
+  }, [dispatch, history, userInfo, successCreate, successDelete]);
 
   const createLevelHandler = (level) => {
     // create program here
+    dispatch(createLevel());
   };
   return (
+    // null &&
     <div>
       <Row className="align-items-center">
         <Col>
           <h1> Levels</h1>
         </Col>
         <Col className="text-end">
-          <Button className="my-3" onClick={handleShow}>
+          <Button className="my-3" onClick={createLevelHandler}>
             <i className="fas fa-plus"></i> Add level
           </Button>
         </Col>
       </Row>
-
-    
-
-
 
       {loadingDelete && <Loader />}
       {errorDelete && <Message variant="danger"> {errorDelete}</Message>}
@@ -81,10 +88,10 @@ function LevelListScreen({ history, match }) {
         <Table striped bordered hover responsive className="table-sm">
           <thead>
             <tr>
-            <th>SN</th>
-            <th>LEVEL NAME</th>
-            <th>LEVEL CODE</th>
-            <th></th>
+              <th>SN</th>
+              <th>LEVEL NAME</th>
+              <th>LEVEL CODE</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -94,7 +101,7 @@ function LevelListScreen({ history, match }) {
                 <td>{program.name}</td>
                 <td>{program.code}</td>
                 <td>
-                  <LinkContainer to={`/admin/level/${program._id["$oid"]}`}>
+                  <LinkContainer to={`/admin/edit/level/${program.code}`}>
                     <Button variant="light" className="btn-sm">
                       <i className="fas fa-edit"></i>
                     </Button>
