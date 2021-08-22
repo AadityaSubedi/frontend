@@ -40,7 +40,7 @@ function Header() {
               </LinkContainer>
               <LinkContainer to="/updates" onClick={handleShow} >
                 <Nav.Link>
-                  <i className="bi bi-search"></i>Search
+                  <i className="fas fa-search"></i>Search
                 </Nav.Link>
               </LinkContainer>
               {userInfo ? (

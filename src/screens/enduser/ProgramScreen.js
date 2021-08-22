@@ -46,7 +46,6 @@ function ProgramScreen({ match }) {
       ) : (
         <Row>
           <h1>
-            {console.log(program)}
             IOE Syllabus of {program.name} ({program.code})
           </h1>
           <Col md={6}>
@@ -61,7 +60,7 @@ function ProgramScreen({ match }) {
           <Accordion defaultActiveKey="1" flush ref ={reference} >
             {program.semesters &&
               Object.keys(program.semesters).map((key, index) => (
-                <Accordion.Item eventKey={key} key={key}>
+                <Accordion.Item eventKey={index} key={index}>
                   <Accordion.Header>
                     <h5>
                       {number2word[Math.ceil(key / 2)]} year{" "}
@@ -71,7 +70,7 @@ function ProgramScreen({ match }) {
                   <Accordion.Body>
                     <ListGroup variant="flush">
                       {program.semesters[key]["subjects"].map((item, index) => (
-                        <>
+                        <div key={index}>
                           <Link
                             to={`/subject/${item.code}`}
                             style={{ "textDecoration": "none" }}
@@ -82,7 +81,7 @@ function ProgramScreen({ match }) {
                               {index + 1}.{item.name} [{item.code}]
                             </ListGroup.Item>
                           </Link>
-                        </>
+                        </div>
                       ))}
                     </ListGroup>
                   </Accordion.Body>

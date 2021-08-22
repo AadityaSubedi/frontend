@@ -11,29 +11,29 @@ import {
   PROGRAM_LIST_REQUEST ,
   PROGRAM_LIST_SUCCESS,
   PROGRAM_LIST_FAIL,
-  
-  LEVEL_CREATE_REQUEST,
-  LEVEL_CREATE_SUCCESS,
-  LEVEL_CREATE_FAIL,
-  LEVEL_CREATE_RESET,
 
   LEVEL_UPDATE_REQUEST,
   LEVEL_UPDATE_SUCCESS,
   LEVEL_UPDATE_FAIL,
   LEVEL_UPDATE_RESET,
 
-  SEARCH_REQUEST,
-  SEARCH_SUCCESS,
-  SEARCH_FAIL,  
-
   PROGRAM_CREATE_REVIEW_REQUEST,
   PROGRAM_CREATE_REVIEW_SUCCESS,
   PROGRAM_CREATE_REVIEW_FAIL,
   PROGRAM_CREATE_REVIEW_RESET,
+  
+  LEVEL_CREATE_REQUEST,
+  LEVEL_CREATE_SUCCESS,
+  LEVEL_CREATE_FAIL,
+  LEVEL_CREATE_RESET,
 
   LEVEL_DELETE_REQUEST,
   LEVEL_DELETE_SUCCESS,
   LEVEL_DELETE_FAIL,
+
+  SEARCH_REQUEST,
+  SEARCH_SUCCESS,
+  SEARCH_FAIL,  
 
   SUBJECT_DETAIL_REQUEST,
   SUBJECT_DETAIL_SUCCESS,
@@ -98,55 +98,36 @@ export const programDetailReducer = (state = { program: {} }, action) => {
 
 
 
-export const searchListReducer = (state = { searchData: [] }, action) => {
-  // switch (action.type) {
-  //   case SEARCH_REQUEST:
-  //     return { loading: true, searchList: [] };
-
-  //   case SEARCH_SUCCESS:
-  //     return { loading: false, searchList: action.payload };
-
-  //   case SEARCH_FAIL:
-  //     return { loading: false, error: action.payload };
-
-  //   default:
-  //     return state;
-  // }
+export const searchListReducer = (state = { searchData: {} }, action) => {
   switch (action.type) {
-      case SEARCH_REQUEST:
-        return { ...state, loading: false, searchData: Search};//action.payload };
-        // return { loading: true, ...state};
-  
-      case SEARCH_SUCCESS:
-        return { ...state, loading: false, searchData: Search};//action.payload };
-  
-      case SEARCH_FAIL:
-        return { ...state, loading: false, searchData: Search};//action.payload };
-        // return { loading: false, error: action.payload };
-  
-      default:
-        return { ...state, loading: false, searchData: Search};//action.payload };
-        // return state;
-    }
+    case SEARCH_REQUEST:
+      return { loading: true, searchData: {} };
+
+    case SEARCH_SUCCESS:
+      return { loading: false, searchData: action.payload };
+
+    case SEARCH_FAIL:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
 };
 
 
-export const subjectDetailReducer = (state = { error: "" }, action) => {
+export const subjectDetailReducer = (state = { subject: {} }, action) => {
     switch (action.type) {
       case SUBJECT_DETAIL_REQUEST:
-        return { ...state, loading: false, subject: Subject};//action.payload };
-        // return { loading: true, ...state};
+        return { loading: true, ...state };
   
       case SUBJECT_DETAIL_SUCCESS:
-        return { ...state, loading: false, subject: Subject};//action.payload };
+        return { loading: false, subject: action.payload };
   
       case SUBJECT_DETAIL_FAIL:
-        return { ...state, loading: false, subject: Subject};//action.payload };
-        // return { loading: false, error: action.payload };
+        return { loading: false, error: action.payload };
   
       default:
-        return { ...state, loading: false, subject: Subject};//action.payload };
-        // return state;
+        return state;
     }
   };
 

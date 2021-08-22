@@ -29,8 +29,8 @@ function App() {
             <Route path='/login' component= {LoginScreen } exact/>
             <Route path='/program/:code' component= {ProgramScreen} exact/>
             <Route path='/subject/:code' component= {SubjectScreen} exact/>
-            <Route path='/search' component= {SearchScreen} exact/>
             <Route path='/subject/:code/:batch' component= {SyllabusScreen} exact/>
+            <Route path='/search' component= {SearchScreen} exact/>
             <Route path='/level/:level' component= {LevelScreen} exact/>
             <Route path='/admin/users' component= {UserListScreen} exact/>
             <Route path='/admin/levels' component= {LevelListScreen} exact/>

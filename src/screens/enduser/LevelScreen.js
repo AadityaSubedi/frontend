@@ -37,8 +37,8 @@ function LevelScreen(props) {
         // null &&
          (
           <Row>
-            {programs.map((item) => (
-              <Col key={item._id} sm={12} md={6} lg={4} xl={3}>
+            {programs.map((item, index) => (
+              <Col key={index} sm={12} md={6} lg={4} xl={3}>
                 <Link to={`/program/${item.code}`}>
                   <CardView item={item} />
                 </Link>

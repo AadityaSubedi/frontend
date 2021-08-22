@@ -21,8 +21,8 @@ const reducer = combineReducers({
   
   programList: programListReducer,
   programDetail: programDetailReducer,
-  subjectDetail: subjectDetailReducer,
   searchList: searchListReducer,
+  subjectDetail: subjectDetailReducer,
 
   userLogin: userLoginReducer,
   userList: userListReducer,

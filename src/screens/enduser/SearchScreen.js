@@ -22,6 +22,9 @@ export default function SearchScreen() {
     dispatch(listSearchData(searchType, searchValue));
   }, [dispatch,searchType,searchValue]);
 
+      console.log("before print");
+      console.log(searchData);
+
 
   return (
     <div>
@@ -42,7 +45,7 @@ export default function SearchScreen() {
             </tr>
           </thead>
           <tbody>
-          {searchData.map((subject, key) => (
+          { searchData && searchData.subject && searchData.subject.map((subject, key) => (
             subject.syllabus.map((syllabus, index) => (
               <tr key={index}>
                 <td>{subject.name}</td>

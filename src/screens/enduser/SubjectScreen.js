@@ -11,14 +11,22 @@ import Message from "../../components/Message";
 
 
 export default function SubjectScreen() {
-  const { code } = useParams();
+  let { code } = useParams();
+
   const dispatch = useDispatch();
-  const subjectDetail = useSelector((state) => state.subjectDetail);
-  const { error, loading, subject } = subjectDetail;
 
   useEffect(() => {
     dispatch(listSubjectDetail(code));
   }, [dispatch,code]);
+
+  const subjectDetail = useSelector((state) => state.subjectDetail);
+  const { error, loading, subject } = subjectDetail;
+
+  console.log("Before print");
+  console.log(code);
+  console.log(subject);
+
+  
 
   return (
     <div>
@@ -39,8 +47,8 @@ export default function SubjectScreen() {
             </tr>
           </thead>
           <tbody>
-          {subject.syllabus.map((syllabus, key) => (
-            <tr key={key}>
+          {subject && subject.syllabus && subject.syllabus.map((syllabus, index) => (
+            <tr key={index}>
               <td>{subject.name}</td>
               <td>{subject.code}</td>
               <td>{syllabus.batch}</td>

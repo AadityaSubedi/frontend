@@ -1,4 +1,5 @@
-const Search = [{
+const Search = {
+	'subject': [{
 	'name': "Physics",
 	'code': "SH101",
 	'syllabus':[
@@ -35,6 +36,6 @@ const Search = [{
 			'filename': 'image/sh101.pdf'
 		},
 	]
-}];
+}]};
 
 export default Search;

@@ -40,7 +40,8 @@ import {
 
 } from "../constants/programConstants";
 
-import Subject from '../subject'; 
+import Subject from '../subject';
+import Search from '../search'; 
 
 import axios from "axios";
 export const listLevels = (level) => async (dispatch) => {
@@ -108,13 +109,14 @@ export const listProgramDetail = (code) => async (dispatch) => {
 };
 
 
-export const listSearchData = (code) => async (dispatch) => {
+export const listSearchData = (searchType, searchValue) => async (dispatch) => {
   try {
+
     dispatch({ type: SEARCH_REQUEST });
-    const { data } = await axios.get(`/api/program/${code}`);
+    // const { data } = await axios.get(`/api/program/${searchValue}`);
     dispatch({
       type: SEARCH_SUCCESS,
-      payload: data['data'],
+      payload: Search,//data['data'],
     });
   } catch (error) {
     dispatch({
@@ -131,7 +133,7 @@ export const listSearchData = (code) => async (dispatch) => {
 export const listSubjectDetail = (code) => async (dispatch) => {
   try {
     dispatch({ type: SUBJECT_DETAIL_REQUEST });
-    const { data } = await axios.get(`/api/program/subject/${code}`);
+    // const { data } = await axios.get(`/api/program/subject/${code}`);
     
     dispatch({
       type: SUBJECT_DETAIL_SUCCESS,

@@ -29,8 +29,8 @@ function HomeScreen() {
         <Message variant='danger'> {error}</Message>
       ) : (
         <Row>
-          {levels.map((item) => (
-            <Col key={item._id} sm={12} md={6} lg={4} xl={3}>
+          {levels.map((item, index) => (
+            <Col key={index} sm={12} md={6} lg={4} xl={3}>
               <Link to={`/level/${item.code}`}>
                 <CardView item={item} />
               </Link>
