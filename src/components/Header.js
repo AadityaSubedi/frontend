@@ -1,20 +1,29 @@
-import React from "react";
+import React, {useState} from "react";
 import { Navbar, Container, Nav, Row, NavDropdown } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from '../actions/userActions'
+import Button from 'react-bootstrap/Button';
+
+import SearchBox from "./SearchBox";
+import { logout } from '../actions/userActions';
 
 
 function Header() {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
-const dispatch = useDispatch()
-  const logoutHandler =()=>{
 
-   dispatch(logout())
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const dispatch = useDispatch();
+  const logoutHandler =()=>{
+    dispatch(logout())
   }
+
   return (
     <header>
+      <SearchBox show={show} setShow={setShow} handleClose={handleClose} handleShow={handleShow} />
       <Navbar bg="dark" variant="dark" collapseOnSelect expand="lg">
         <Container>
           <LinkContainer to="/">
@@ -24,9 +33,14 @@ const dispatch = useDispatch()
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
-              <LinkContainer to="/updates">
+              <LinkContainer to="/updates" >
                 <Nav.Link>
                   <i className="fas fa-sync-alt"></i>Updates
+                </Nav.Link>
+              </LinkContainer>
+              <LinkContainer to="/updates" onClick={handleShow} >
+                <Nav.Link>
+                  <i className="bi bi-search"></i>Search
                 </Nav.Link>
               </LinkContainer>
               {userInfo ? (
