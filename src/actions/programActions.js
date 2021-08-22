@@ -23,6 +23,14 @@ import {
   LEVEL_UPDATE_SUCCESS,
   LEVEL_UPDATE_FAIL,
   LEVEL_UPDATE_RESET,
+
+PROGRAM_UPDATE_REQUEST,
+PROGRAM_UPDATE_SUCCESS,
+PROGRAM_UPDATE_FAIL,
+PROGRAM_UPDATE_RESET,
+
+
+
   PROGRAM_CREATE_REVIEW_REQUEST,
   PROGRAM_CREATE_REVIEW_SUCCESS,
   PROGRAM_CREATE_REVIEW_FAIL,
@@ -187,7 +195,7 @@ export const createLevel = () => async (dispatch, getState) => {
     const { data } = await axios.post(`/api/levels`, {}, config);
     dispatch({
       type: LEVEL_CREATE_SUCCESS,
-      payload: data,
+      payload: data['data'],
     });
   } catch (error) {
     dispatch({
@@ -204,7 +212,7 @@ export const createLevel = () => async (dispatch, getState) => {
 
 
 
-export const createProgram = () => async (dispatch, getState) => {
+export const createProgram = (levelCode =null) => async (dispatch, getState) => {
   try {
     dispatch({
       type: PROGRAM_CREATE_REQUEST,
@@ -221,7 +229,7 @@ export const createProgram = () => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.post(`/api/levels`, {}, config);
+    const { data } = await axios.post(`/api/programs`, {levelCode:levelCode}, config);
     dispatch({
       type: PROGRAM_CREATE_SUCCESS,
       payload: data,
@@ -236,6 +244,8 @@ export const createProgram = () => async (dispatch, getState) => {
     });
   }
 };
+
+
 
 export const updateLevel = (level) => async (dispatch, getState) => {
   try {
@@ -284,6 +294,66 @@ export const updateLevel = (level) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: LEVEL_UPDATE_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+
+
+
+
+
+
+export const updateProgram = (program) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: PROGRAM_UPDATE_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    delete(program.image)
+
+    const formData = new FormData();
+    for (const [key, value] of Object.entries(program)) {
+      if (key === "_id") continue;
+      if (typeof value === "object" && key !=="file")
+        formData.append(key, JSON.stringify(value));
+      else {
+        formData.append(key, value);
+      }
+    }
+
+    const { data } = await axios.put(
+      `/api/program/${program._id["$oid"]}`,
+      formData,
+      config
+    );
+
+    dispatch({
+      type: LEVEL_UPDATE_SUCCESS,
+      payload: program,
+    });
+
+    // dispatch({
+    //   type: PROGRAM_LIST_SUCCESS,
+    //   payload: level,
+    // });
+  } catch (error) {
+    dispatch({
+      type: PROGRAM_UPDATE_FAIL,
       payload:
         error.response && error.response.data.detail
           ? error.response.data.detail

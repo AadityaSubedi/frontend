@@ -3,11 +3,12 @@ import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import {
   levelListReducer,
+  levelCreateReducer,
   levelDeleteReducer,
   levelUpdateReducer,
-  programDetailReducer,
   programListReducer,
-  levelCreateReducer
+  programCreateReducer,
+  programDetailReducer,
 } from "./reducers/programReducers";
 import { userLoginReducer, userListReducer } from "./reducers/userReducers";
 const reducer = combineReducers({
@@ -18,6 +19,7 @@ const reducer = combineReducers({
   
   programList: programListReducer,
   programDetail: programDetailReducer,
+  programCreate: programCreateReducer,
   
   userLogin: userLoginReducer,
   userList: userListReducer,

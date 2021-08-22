@@ -18,6 +18,7 @@ import FormContainer from "../../components/FormContainer";
 import { render } from "@testing-library/react";
 import { ModalView } from "../../components/ModalView";
 import { Modal } from "bootstrap";
+import { Link } from "react-router-dom";
 
 function LevelListScreen({ history, match }) {
   const dispatch = useDispatch();
@@ -97,9 +98,13 @@ function LevelListScreen({ history, match }) {
           <tbody>
             {programs.map((program, index) => (
               <tr key={program._id["$oid"]}>
-                <td>{index + 1}</td>
-                <td>{program.name}</td>
+
+                <td>{index + 1}.</td>
+              
+                <td onClick={()=>history.push(`/admin/programs/${program.code}`)} style ={{'cursor':'pointer'}}>{program.name}</td>
+                
                 <td>{program.code}</td>
+
                 <td>
                   <LinkContainer to={`/admin/edit/level/${program.code}`}>
                     <Button variant="light" className="btn-sm">

@@ -11,6 +11,8 @@ import UserListScreen from "./screens/admin/UserListScreen";
 import LevelListScreen from "./screens/admin/LevelListScreen";
 import LevelEditScreen from "./screens/admin/LevelEditScreen";
 import ProgramListScreen from "./screens/admin/ProgramListScreen";
+import ProgramEditScreen from "./screens/admin/ProgramEditScreen";
+
 
 function App() {
   return (
@@ -27,13 +29,18 @@ function App() {
             <Route path="/admin/users" component={UserListScreen} exact />
             <Route path="/admin/levels" component={LevelListScreen} exact />
             <Route
+              path="/admin/programs/:code"
+              component={ProgramListScreen}
+              exact
+            />
+            <Route
               path="/admin/edit/level/:code"
               component={LevelEditScreen}
               exact
             />
-            <Route
-              path="/admin/programs/:code"
-              component={ProgramListScreen}
+           <Route
+              path="/admin/edit/program/:code"
+              component={ProgramEditScreen}
               exact
             />
           </Switch>

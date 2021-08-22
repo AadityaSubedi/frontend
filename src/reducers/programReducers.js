@@ -13,6 +13,12 @@ import {
   LEVEL_CREATE_SUCCESS,
   LEVEL_CREATE_FAIL,
   LEVEL_CREATE_RESET,
+
+  PROGRAM_CREATE_REQUEST,
+  PROGRAM_CREATE_SUCCESS,
+  PROGRAM_CREATE_FAIL,
+  PROGRAM_CREATE_RESET,
+
   LEVEL_UPDATE_REQUEST,
   LEVEL_UPDATE_SUCCESS,
   LEVEL_UPDATE_FAIL,
@@ -108,6 +114,27 @@ export const levelCreateReducer = (state = {}, action) => {
       return { loading: false, error: action.payload };
 
     case LEVEL_CREATE_RESET:
+      return {};
+
+    default:
+      return state;
+  }
+};
+
+
+
+export const programCreateReducer = (state = {}, action) => {
+  switch (action.type) {
+    case PROGRAM_CREATE_REQUEST:
+      return { loading: true };
+
+    case PROGRAM_CREATE_SUCCESS:
+      return { loading: false, success: true, level: action.payload };
+
+    case PROGRAM_CREATE_FAIL:
+      return { loading: false, error: action.payload };
+
+    case PROGRAM_CREATE_RESET:
       return {};
 
     default:
