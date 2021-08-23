@@ -27,7 +27,6 @@ export default function SubjectScreen() {
 
   return (
     <div>
-      <h1> {} </h1>
       {loading ? (
         <Loader />
       ) : error ? (
@@ -58,19 +57,3 @@ export default function SubjectScreen() {
     </div>
   );
 }
-
-//               <th>Actions</th>
-// <td>
-//                 <Link 
-//                   to={{
-//                     pathname: `/subject/${subject.code}/${syllabus.batch}`
-//                     ,state: {
-//                       syllabus: syllabus
-//                     }
-//                   }}
-//                 >
-//                   View
-//                 </Link>
-//                   <br/>
-//                 <Link to="/">Edit</Link>
-//               </td>
