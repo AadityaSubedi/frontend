@@ -4,11 +4,9 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import {
   levelListReducer,
 
-
+levelCreateReducer,
   searchListReducer,
   subjectDetailReducer,
-
-  levelCreateReducer,
 
   levelDeleteReducer,
   levelUpdateReducer,

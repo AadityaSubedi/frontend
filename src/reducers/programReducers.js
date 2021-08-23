@@ -21,6 +21,7 @@ import {
   PROGRAM_CREATE_REVIEW_SUCCESS,
   PROGRAM_CREATE_REVIEW_FAIL,
   PROGRAM_CREATE_REVIEW_RESET,
+
   LEVEL_CREATE_REQUEST,
   LEVEL_CREATE_SUCCESS,
   LEVEL_CREATE_FAIL,
@@ -29,6 +30,8 @@ import {
   PROGRAM_CREATE_SUCCESS,
   PROGRAM_CREATE_FAIL,
   PROGRAM_CREATE_RESET,
+
+
   SEARCH_REQUEST,
   SEARCH_SUCCESS,
   SEARCH_FAIL,
@@ -119,6 +122,16 @@ export const searchListReducer = (state = { searchData: {} }, action) => {
       return { loading: true, searchData: {} };
 
     case SEARCH_SUCCESS:
+      // action.payload = action.payload.map(subject) => {
+      //         return subject.syllabus.map((syllabus) => {
+      //           return  { 
+      //                     "name": subject.name, 
+      //                     "code": subject.code, 
+      //                     "syllabus": syllabus, 
+      //                     "remarks": syllabus.date_implemented
+      //                   }
+      //         })
+      // }).flat());
       return { loading: false, searchData: action.payload };
 
     case SEARCH_FAIL:

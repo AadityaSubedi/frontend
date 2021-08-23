@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { useParams, Link, useLocation } from 'react-router-dom';
+import { useParams, Link, useLocation, useHistory } from 'react-router-dom';
 
 import { useDispatch, useSelector } from "react-redux";
 
@@ -17,14 +17,11 @@ export default function SearchScreen() {
   const searchType = location.state.searchType;
   const searchValue = location.state.searchValue;
   const { error, loading, searchData } = searchList;
+  let history = useHistory();
 
   useEffect(() => {
     dispatch(listSearchData(searchType, searchValue));
   }, [dispatch,searchType,searchValue]);
-
-      console.log("before print");
-      console.log(searchData);
-
 
   return (
     <div>
@@ -41,31 +38,16 @@ export default function SearchScreen() {
               <th>Subject Code</th>
               <th>Batch</th>
               <th>Remarks</th>
-              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-          { searchData && searchData.subject && searchData.subject.map((subject, key) => (
+          { searchData && searchData.map((subject, key) => (
             subject.syllabus.map((syllabus, index) => (
-              <tr key={index}>
+              <tr key={index} onClick={()=>history.push({ pathname: `/subject/${subject.code}/${syllabus.batch}`, state: {syllabus: syllabus}})} style ={{'cursor':'pointer'}}>
                 <td>{subject.name}</td>
                 <td>{subject.code}</td>
                 <td>{syllabus.batch}</td>
                 <td>{syllabus.remarks}</td>
-                <td>
-                  <Link 
-                    to={{
-                      pathname: `/subject/${subject.code}/${syllabus.batch}`
-                      ,state: {
-                        syllabus: syllabus
-                      }
-                    }}
-                  >
-                    View
-                  </Link>
-                    <br/>
-                  <Link to="/">Edit</Link>
-                </td>
               </tr>
             ))
           ))}

@@ -60,8 +60,6 @@ PROGRAM_UPDATE_RESET,
 
 } from "../constants/programConstants";
 
-import Subject from '../subject';
-import Search from '../search'; 
 
 import axios from "axios";
 export const listLevels = () => async (dispatch) => {
@@ -127,10 +125,10 @@ export const listSearchData = (searchType, searchValue) => async (dispatch) => {
   try {
 
     dispatch({ type: SEARCH_REQUEST });
-    // const { data } = await axios.get(`/api/program/${searchValue}`);
+    const { data } = await axios.get(`/api/subject/${searchType}/${searchValue}`);
     dispatch({
       type: SEARCH_SUCCESS,
-      payload: Search,//data['data'],
+      payload: data['data'],
     });
   } catch (error) {
     dispatch({
@@ -147,11 +145,11 @@ export const listSearchData = (searchType, searchValue) => async (dispatch) => {
 export const listSubjectDetail = (code) => async (dispatch) => {
   try {
     dispatch({ type: SUBJECT_DETAIL_REQUEST });
-    // const { data } = await axios.get(`/api/program/subject/${code}`);
+    const { data } = await axios.get(`/api/subject/${code}`);
     
     dispatch({
       type: SUBJECT_DETAIL_SUCCESS,
-      payload: Subject,//data['data'],
+      payload: data['data'],
     });
   } catch (error) {
     dispatch({
