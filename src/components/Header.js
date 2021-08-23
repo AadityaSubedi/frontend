@@ -44,6 +44,10 @@ const dispatch = useDispatch()
                     <NavDropdown.Item>Edit Syllabus</NavDropdown.Item>
                   </LinkContainer>
 
+
+                  <LinkContainer to="/admin/subjects">
+                    <NavDropdown.Item>Subjects</NavDropdown.Item>
+                  </LinkContainer>
                   <NavDropdown.Item onClick={logoutHandler}>Log out</NavDropdown.Item>
 
                 </NavDropdown>

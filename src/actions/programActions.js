@@ -343,7 +343,7 @@ export const updateProgram = (program) => async (dispatch, getState) => {
     );
 
     dispatch({
-      type: LEVEL_UPDATE_SUCCESS,
+      type: PROGRAM_UPDATE_SUCCESS,
       payload: program,
     });
 

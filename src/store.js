@@ -9,6 +9,8 @@ import {
   programListReducer,
   programCreateReducer,
   programDetailReducer,
+  programUpdateReducer,
+  
 } from "./reducers/programReducers";
 import { userLoginReducer, userListReducer } from "./reducers/userReducers";
 const reducer = combineReducers({
@@ -20,6 +22,8 @@ const reducer = combineReducers({
   programList: programListReducer,
   programDetail: programDetailReducer,
   programCreate: programCreateReducer,
+  programUpdate: programUpdateReducer,
+  
   
   userLogin: userLoginReducer,
   userList: userListReducer,

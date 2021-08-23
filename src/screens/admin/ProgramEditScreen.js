@@ -36,88 +36,123 @@ function ProgramEditScreen({ match, history }) {
   const programDetail = useSelector((state) => state.programDetail);
   const { error, loading, program } = programDetail;
 
-  // const levelUpdate = useSelector((state) => state.levelUpdate);
-  // const {
-  //   error: errorUpdate,
-  //   loading: loadingUpdate,
-  //   success: successUpdate,
-  // } = levelUpdate;
+  const programUpdate = useSelector((state) => state.programUpdate);
+  const {
+    error: errorUpdate,
+    loading: loadingUpdate,
+    success: successUpdate,
+  } = programUpdate;
 
   useEffect(() => {
-    // if (successUpdate) {
-    //   dispatch({ type: LEVEL_UPDATE_RESET });
-    //   dispatch({ type: PROGRAM_LIST_RESET });
-    //   history.push("/admin/levels");
-    // } else {
-    // console.log(program, programCode);
-    if (!program.name || program.code !== programCode) {
-      dispatch(listProgramDetail(programCode));
+    if (successUpdate) {
+      // let level  =
+      dispatch({ type: PROGRAM_UPDATE_RESET });
+      dispatch({ type: PROGRAM_DETAIL_RESET });
+      history.push(`/admin/programs/${program.level}`);
     } else {
-      // get list of the all subjectss
+      // console.log(program, programCode);
+      if (!program.name || program.code !== programCode) {
+        dispatch(listProgramDetail(programCode));
+      } else {
+        // get list of the all subjectss
 
-      const fn = async () => {
-        try {
-          const { data } = await axios.get("/api/subjects");
-          let subjects = data["data"];
-          setOptions(subjects.map((x) => ({ label: x.code, value: x.code })));
-        } catch (error) {
-          setOptions([{ label: "error", value: "error" }]);
-        }
-      };
-      fn();
-      setName(program.name);
-      setCode(program.code);
-      setDescription(program.description);
+        const fn = async () => {
+          try {
+            const { data } = await axios.get("/api/subjects");
+            let subjects = data["data"];
+            setOptions(subjects.map((x) => ({ label: x.code, value: x.code })));
+          } catch (error) {
+            setOptions([{ label: "error", value: "error" }]);
+          }
+        };
+        fn();
+        setName(program.name);
+        setCode(program.code);
+        setDescription(program.description);
 
-      // setSubjects(
-      //   program['semesters'].map((x) => ({ label: x.code, value: x.code }))
-      // );
+        // setSubjects(
+        //   program['semesters'].map((x) => ({ label: x.code, value: x.code }))
+        // );
 
-      // [{1:{1:{"subjects":[]}, 2:{"subjects":[]}} }]
+        // [{1:{1:{"subjects":[]}, 2:{"subjects":[]}} }]
 
-      let subject = Object.keys(program.semesters).map((key, index) => (
-        key % 2 ===1 &&{
-          [Math.ceil(key / 2)]: {
-          1: {
-            subjects: program.semesters[key].subjects.map((x) => ({
-              label: x.code,
-              value: x.code,
-            })),
-          },
-          2: { subjects: program.semesters[`${+key+1}`].subjects.map((x) => ({
-            label: x.code,
-            value: x.code,
-          })) },
-        },
-      })).filter(item =>item);
-      console.log(subject);
-      setSubjects(subject);
+        let subject = Object.keys(program.semesters)
+          .map(
+            (key, index) =>
+              key % 2 === 1 && {
+                [Math.ceil(key / 2)]: {
+                  1: {
+                    subjects: program.semesters[key].subjects.map((x) => ({
+                      label: x.code,
+                      value: x.code,
+                    })),
+                  },
+                  2: {
+                    subjects: program.semesters[`${+key + 1}`].subjects.map(
+                      (x) => ({
+                        label: x.code,
+                        value: x.code,
+                      })
+                    ),
+                  },
+                },
+              }
+          )
+          .filter((item) => item);
+        console.log(subject);
+        setSubjects(subject);
+      }
     }
-    // }
-  }, [dispatch, program, programCode, history]); // successUpdate]);
+  }, [dispatch, program, programCode, history, successUpdate]);
 
   const submitHandler = (e) => {
     e.preventDefault();
+
+    // [{1:{1:{"subjects":[
+    //   { label: "SH405", value: "SH405" },
+    //    { label: "error", value: "error" }
+    //   ]
+    // }, 2:{"subjects":[]}} }, {2:{1:{"subjects":[]}, 2:{"subjects":[]}} }, {3:{1:{"subjects":[]}, 2:{"subjects":[]}} }]
+    // parse the semester data
+
+    // "semesters" : {
+    // "1" : { "subjects" : [ "SH401", "CT401" ] },
+    // "2" : { "subjects" : [ "SH451", "UH451" ] },
+    //  "3" : { "subjects" : [ "SH501", "CT501" ] },
+    //  "4" : { "subjects" : [ "EE554", "SH553" ] }
+    //  },
+    let semesters = {};
+    subjects.forEach((item, index) => {
+      semesters[index * 2 + 1] = {};
+      semesters[index * 2 + 1]["subjects"] = item[index + 1][1]["subjects"].map(
+        (item) => item.value
+      );
+      semesters[index * 2 + 2] = {};
+      semesters[index * 2 + 2]["subjects"] = item[index + 1][2]["subjects"].map(
+        (item) => item.value
+      );
+    });
+
     dispatch(
       updateProgram({
         ...program,
         name,
         code,
         description,
+        semesters,
         // programs: programs.map((x) => x.value),
         ...(imageUpload && { file: image }),
       })
     );
   };
 
-  const onSubjectSelect = (index,part, selectedItems) => {
-    // here: index is 1 based 
-    const subject =[...subjects]
-    subject[index][index+1][part]["subjects"] = selectedItems
-    setSubjects(subject)
+  const onSubjectSelect = (index, part, selectedItems) => {
+    // here: index is 1 based
+    const subject = [...subjects];
+    subject[index][index + 1][part]["subjects"] = selectedItems;
+    setSubjects(subject);
 
     // [{1:{1:{"subjects":[]}, 2:{"subjects":[]}} }]
-    
   };
 
   return (
@@ -127,8 +162,8 @@ function ProgramEditScreen({ match, history }) {
 
       <FormContainer>
         <h1>Edit Program</h1>
-        {/* {loadingUpdate && <Loader />}
-        {errorUpdate && <Message variant="danger">{errorUpdate}</Message>} */}
+        {loadingUpdate && <Loader />}
+        {errorUpdate && <Message variant="danger">{errorUpdate}</Message>}
         {loading ? (
           <Loader />
         ) : error ? (
@@ -195,7 +230,9 @@ function ProgramEditScreen({ match, history }) {
                       <MultiSelect
                         options={options}
                         value={item[index + 1][1].subjects}
-                        onChange={(selectedItems)=>{onSubjectSelect(index,1, selectedItems)}}
+                        onChange={(selectedItems) => {
+                          onSubjectSelect(index, 1, selectedItems);
+                        }}
                         labelledBy="Select"
                       />
                     </Col>
@@ -204,7 +241,9 @@ function ProgramEditScreen({ match, history }) {
                       <MultiSelect
                         options={options}
                         value={item[index + 1][2].subjects}
-                        onChange={(selectedItems)=>{onSubjectSelect(index,2, selectedItems)}}
+                        onChange={(selectedItems) => {
+                          onSubjectSelect(index, 2, selectedItems);
+                        }}
                         labelledBy="Select"
                       />
                     </Col>

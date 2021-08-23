@@ -23,6 +23,13 @@ import {
   LEVEL_UPDATE_SUCCESS,
   LEVEL_UPDATE_FAIL,
   LEVEL_UPDATE_RESET,
+
+
+  PROGRAM_UPDATE_REQUEST,
+  PROGRAM_UPDATE_SUCCESS,
+  PROGRAM_UPDATE_FAIL,
+  PROGRAM_UPDATE_RESET,
+
   PROGRAM_CREATE_REVIEW_REQUEST,
   PROGRAM_CREATE_REVIEW_SUCCESS,
   PROGRAM_CREATE_REVIEW_FAIL,
@@ -114,7 +121,7 @@ export const levelCreateReducer = (state = {}, action) => {
       return { loading: false, error: action.payload };
 
     case LEVEL_CREATE_RESET:
-      return {};
+      return {}; //initial state 
 
     default:
       return state;
@@ -142,19 +149,44 @@ export const programCreateReducer = (state = {}, action) => {
   }
 };
 
+
+// marked 1
 export const levelUpdateReducer = (state = { level: {} }, action) => {
   switch (action.type) {
     case LEVEL_UPDATE_REQUEST:
       return { loading: true };
 
     case LEVEL_UPDATE_SUCCESS:
-      return { loading: false, success: true, level: action.payload };
+      return { loading: false, success: true, level: action.payload }; // yo level nai hunu parxa hai
 
     case LEVEL_UPDATE_FAIL:
       return { loading: false, error: action.payload };
 
     case LEVEL_UPDATE_RESET:
       return { level: {} };
+
+    default:
+      return state;
+  }
+};
+
+
+
+
+
+export const programUpdateReducer = (state = { program: {} }, action) => {
+  switch (action.type) {
+    case PROGRAM_UPDATE_REQUEST:
+      return { loading: true };
+
+    case PROGRAM_UPDATE_SUCCESS:
+      return { loading: false, success: true, program: action.payload };
+
+    case PROGRAM_UPDATE_FAIL:
+      return { loading: false, error: action.payload };
+
+    case PROGRAM_UPDATE_RESET:
+      return { program : {} };
 
     default:
       return state;
