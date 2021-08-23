@@ -18,6 +18,7 @@ import LevelEditScreen from "./screens/admin/LevelEditScreen";
 import ProgramListScreen from "./screens/admin/ProgramListScreen";
 import ProgramEditScreen from "./screens/admin/ProgramEditScreen";
 import SubjectListScreen from "./screens/admin/SubjectListScreen";
+import SubjectEditScreen from "./screens/admin/SubjectEditScreen";
 
 function App() {
   console.log(Subject);
@@ -47,11 +48,7 @@ function App() {
               exact
             />
 
-            <Route
-              path="/admin/subjects"
-              component={SubjectListScreen}
-              exact
-            />
+            <Route path="/admin/subjects" component={SubjectListScreen} exact />
 
             <Route
               path="/admin/edit/level/:code"
@@ -61,6 +58,12 @@ function App() {
             <Route
               path="/admin/edit/program/:code"
               component={ProgramEditScreen}
+              exact
+            />
+
+            <Route
+              path="/admin/edit/subject/:code"
+              component={SubjectEditScreen}
               exact
             />
           </Switch>

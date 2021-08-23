@@ -16,7 +16,7 @@ function SyllabusScreen({}) {
   const location = useLocation();
   const syllabus = location.state.syllabus;
 
-  function onDocumentLoadSuccess({ pdfDoc }) {
+  function onDocumentLoadSuccess( pdfDoc ) {
     setPages([...Array(pdfDoc._pdfInfo.numPages).keys()]);
   }
 
@@ -27,7 +27,7 @@ function SyllabusScreen({}) {
       <Row><h5>Practical marks : {syllabus.practical}</h5></Row>
       <Row><h5>Teaching hours : {syllabus.teaching}</h5></Row>
       <Document
-        file={syllabus.filename} // hardcoded just for testing 
+        file={`/files/${syllabus.filename}`} // hardcoded just for testing 
         onLoadSuccess={onDocumentLoadSuccess}
       >
         {pages.map((page)=>

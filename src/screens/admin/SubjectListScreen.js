@@ -45,8 +45,7 @@ function SubjectListScreen({ history, match }) {
       const fn = async () => {
         try {
           const { data } = await axios.delete(`/api/subject/${subjectId}`);
-          console.log(data);
-          setSubjects(data["data"]);
+
         } catch (error) {
           setError(
             error.response && error.response.data.detail
@@ -60,6 +59,7 @@ function SubjectListScreen({ history, match }) {
 
     }
   };
+  
   useEffect(() => {
     if (userInfo) {
       // dispatch(listPrograms(levelCode));
@@ -87,6 +87,22 @@ function SubjectListScreen({ history, match }) {
     // create program here
     // post request to post a subject
     // dispatch(createProgram(levelCode));
+
+
+    const fn = async () => {
+      try {
+        const { data } = await axios.post("/api/subjects");
+        window.location.reload()
+
+      } catch (error) {
+        setError(
+          error.response && error.response.data.detail
+            ? error.response.data.detail
+            : error.message
+        );
+      }
+    };
+    fn();
   };
   return (
     <div>
@@ -134,7 +150,7 @@ function SubjectListScreen({ history, match }) {
                 </td>
                 <td>{program.code}</td>
                 <td>
-                  <LinkContainer to={`/admin/edit/program/${program.code}`}>
+                  <LinkContainer to={`/admin/edit/subject/${program.code}`}>
                     <Button variant="light" className="btn-sm">
                       <i className="fas fa-edit"></i>
                     </Button>
