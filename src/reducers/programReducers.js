@@ -114,7 +114,9 @@ export const levelDeleteReducer = (state = {}, action) => {
   }
 };
 
+
 export const searchListReducer = (state = { searchData: [] }, action) => {
+
   switch (action.type) {
     case SEARCH_REQUEST:
       return { loading: true, searchData: [] };
