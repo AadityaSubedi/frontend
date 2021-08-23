@@ -1,3 +1,11 @@
+
+
+import SyllabusScreen from './screens/enduser/SyllabusScreen'
+import SearchScreen from './screens/enduser/SearchScreen'
+
+
+import Subject from './subject';
+
 import { Container } from "react-bootstrap";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -14,13 +22,21 @@ import ProgramListScreen from "./screens/admin/ProgramListScreen";
 import ProgramEditScreen from "./screens/admin/ProgramEditScreen";
 
 
+
 function App() {
+  console.log(Subject);
   return (
     <Router>
       <Header />
       <main className="py-3">
         <Container>
           <Switch>
+
+
+            <Route path='/subject/:code/:batch' component= {SyllabusScreen} exact/>
+            <Route path='/search' component= {SearchScreen} exact/>
+
+
             <Route path="/" component={HomeScreen} exact />
             <Route path="/login" component={LoginScreen} exact />
             <Route path="/program/:code" component={ProgramScreen} exact />
@@ -43,6 +59,7 @@ function App() {
               component={ProgramEditScreen}
               exact
             />
+
           </Switch>
         </Container>
       </main>

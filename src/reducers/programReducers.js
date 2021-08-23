@@ -8,21 +8,13 @@ import {
   PROGRAM_LIST_REQUEST,
   PROGRAM_LIST_SUCCESS,
   PROGRAM_LIST_FAIL,
-  PROGRAM_LIST_RESET,
-  LEVEL_CREATE_REQUEST,
-  LEVEL_CREATE_SUCCESS,
-  LEVEL_CREATE_FAIL,
-  LEVEL_CREATE_RESET,
 
-  PROGRAM_CREATE_REQUEST,
-  PROGRAM_CREATE_SUCCESS,
-  PROGRAM_CREATE_FAIL,
-  PROGRAM_CREATE_RESET,
 
   LEVEL_UPDATE_REQUEST,
   LEVEL_UPDATE_SUCCESS,
   LEVEL_UPDATE_FAIL,
   LEVEL_UPDATE_RESET,
+
 
 
   PROGRAM_UPDATE_REQUEST,
@@ -34,10 +26,26 @@ import {
   PROGRAM_CREATE_REVIEW_SUCCESS,
   PROGRAM_CREATE_REVIEW_FAIL,
   PROGRAM_CREATE_REVIEW_RESET,
+
+
+
+
+  SEARCH_REQUEST,
+  SEARCH_SUCCESS,
+  SEARCH_FAIL,  
+
+  SUBJECT_DETAIL_REQUEST,
+  SUBJECT_DETAIL_SUCCESS,
+  SUBJECT_DETAIL_FAIL,
+
   LEVEL_DELETE_REQUEST,
   LEVEL_DELETE_SUCCESS,
   LEVEL_DELETE_FAIL,
+
 } from "../constants/programConstants";
+
+import Subject from '../subject';
+import Search from '../search';
 // export above constants from the separate file
 
 export const levelListReducer = (state = { levels: [] }, action) => {
@@ -109,6 +117,49 @@ export const levelDeleteReducer = (state = {}, action) => {
   }
 };
 
+
+
+
+
+
+export const searchListReducer = (state = { searchData: {} }, action) => {
+  switch (action.type) {
+    case SEARCH_REQUEST:
+      return { loading: true, searchData: {} };
+
+    case SEARCH_SUCCESS:
+      return { loading: false, searchData: action.payload };
+
+    case SEARCH_FAIL:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+
+
+export const subjectDetailReducer = (state = { subject: {} }, action) => {
+    switch (action.type) {
+      case SUBJECT_DETAIL_REQUEST:
+        return { loading: true, ...state };
+  
+      case SUBJECT_DETAIL_SUCCESS:
+        return { loading: false, subject: action.payload };
+  
+      case SUBJECT_DETAIL_FAIL:
+        return { loading: false, error: action.payload };
+  
+      default:
+        return state;
+    }
+  };
+
+
+
+
+  
+
 export const levelCreateReducer = (state = {}, action) => {
   switch (action.type) {
     case LEVEL_CREATE_REQUEST:
@@ -134,6 +185,7 @@ export const programCreateReducer = (state = {}, action) => {
   switch (action.type) {
     case PROGRAM_CREATE_REQUEST:
       return { loading: true };
+
 
     case PROGRAM_CREATE_SUCCESS:
       return { loading: false, success: true, level: action.payload };

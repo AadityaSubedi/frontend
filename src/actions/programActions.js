@@ -14,6 +14,14 @@ import {
   LEVEL_CREATE_FAIL,
   LEVEL_CREATE_RESET,
 
+
+
+  SEARCH_REQUEST,
+  SEARCH_SUCCESS,
+  SEARCH_FAIL,  
+
+
+
   PROGRAM_CREATE_REQUEST,
   PROGRAM_CREATE_SUCCESS,
   PROGRAM_CREATE_FAIL,
@@ -31,6 +39,7 @@ PROGRAM_UPDATE_RESET,
 
 
 
+
   PROGRAM_CREATE_REVIEW_REQUEST,
   PROGRAM_CREATE_REVIEW_SUCCESS,
   PROGRAM_CREATE_REVIEW_FAIL,
@@ -39,10 +48,20 @@ PROGRAM_UPDATE_RESET,
   LEVEL_DELETE_SUCCESS,
   LEVEL_DELETE_FAIL,
 
+
+  SUBJECT_DETAIL_REQUEST,
+  SUBJECT_DETAIL_SUCCESS,
+  SUBJECT_DETAIL_FAIL,
+
+
   PROGRAM_DELETE_REQUEST,
   PROGRAM_DELETE_SUCCESS,
   PROGRAM_DELETE_FAIL,
+
 } from "../constants/programConstants";
+
+import Subject from '../subject';
+import Search from '../search'; 
 
 import axios from "axios";
 export const listLevels = () => async (dispatch) => {
@@ -104,6 +123,48 @@ export const listProgramDetail = (code) => async (dispatch) => {
 };
 
 
+export const listSearchData = (searchType, searchValue) => async (dispatch) => {
+  try {
+
+    dispatch({ type: SEARCH_REQUEST });
+    // const { data } = await axios.get(`/api/program/${searchValue}`);
+    dispatch({
+      type: SEARCH_SUCCESS,
+      payload: Search,//data['data'],
+    });
+  } catch (error) {
+    dispatch({
+      type: SEARCH_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+
+export const listSubjectDetail = (code) => async (dispatch) => {
+  try {
+    dispatch({ type: SUBJECT_DETAIL_REQUEST });
+    // const { data } = await axios.get(`/api/program/subject/${code}`);
+    
+    dispatch({
+      type: SUBJECT_DETAIL_SUCCESS,
+      payload: Subject,//data['data'],
+    });
+  } catch (error) {
+    dispatch({
+      type: SUBJECT_DETAIL_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+
 
 export const deleteLevel = (id) => async (dispatch, getState) => {
   try {
@@ -114,6 +175,7 @@ export const deleteLevel = (id) => async (dispatch, getState) => {
     const {
       userLogin: { userInfo },
     } = getState();
+
 
     const config = {
       headers: {
@@ -127,6 +189,7 @@ export const deleteLevel = (id) => async (dispatch, getState) => {
     dispatch({
       type: LEVEL_DELETE_SUCCESS,
     });
+
   } catch (error) {
     dispatch({
       type: LEVEL_DELETE_FAIL,
