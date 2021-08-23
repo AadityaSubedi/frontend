@@ -17,8 +17,6 @@ function SyllabusScreen({}) {
   const syllabus = location.state.syllabus;
 
   function onDocumentLoadSuccess(pdfDoc) {
-    console.log("inside pdf ");
-    console.log(pdfDoc);
     setPages([...Array(pdfDoc._pdfInfo.numPages).keys()]);
   }
 

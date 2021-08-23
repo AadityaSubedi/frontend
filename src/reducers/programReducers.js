@@ -43,8 +43,6 @@ import {
   LEVEL_DELETE_FAIL,
 } from "../constants/programConstants";
 
-import Subject from "../subject";
-import Search from "../search";
 // export above constants from the separate file
 
 export const levelListReducer = (state = { levels: [] }, action) => {
@@ -116,22 +114,14 @@ export const levelDeleteReducer = (state = {}, action) => {
   }
 };
 
-export const searchListReducer = (state = { searchData: {} }, action) => {
+
+export const searchListReducer = (state = { searchData: [] }, action) => {
+
   switch (action.type) {
     case SEARCH_REQUEST:
-      return { loading: true, searchData: {} };
+      return { loading: true, searchData: [] };
 
     case SEARCH_SUCCESS:
-      // action.payload = action.payload.map(subject) => {
-      //         return subject.syllabus.map((syllabus) => {
-      //           return  { 
-      //                     "name": subject.name, 
-      //                     "code": subject.code, 
-      //                     "syllabus": syllabus, 
-      //                     "remarks": syllabus.date_implemented
-      //                   }
-      //         })
-      // }).flat());
       return { loading: false, searchData: action.payload };
 
     case SEARCH_FAIL:
