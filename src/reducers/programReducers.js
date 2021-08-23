@@ -8,26 +8,20 @@ import {
   PROGRAM_LIST_REQUEST,
   PROGRAM_LIST_SUCCESS,
   PROGRAM_LIST_FAIL,
-
-
+  PROGRAM_LIST_RESET,
   LEVEL_UPDATE_REQUEST,
   LEVEL_UPDATE_SUCCESS,
   LEVEL_UPDATE_FAIL,
   LEVEL_UPDATE_RESET,
-
-
-
   PROGRAM_UPDATE_REQUEST,
   PROGRAM_UPDATE_SUCCESS,
   PROGRAM_UPDATE_FAIL,
   PROGRAM_UPDATE_RESET,
-
   PROGRAM_CREATE_REVIEW_REQUEST,
   PROGRAM_CREATE_REVIEW_SUCCESS,
   PROGRAM_CREATE_REVIEW_FAIL,
   PROGRAM_CREATE_REVIEW_RESET,
 
-  PROGRAM_LIST_RESET,
   LEVEL_CREATE_REQUEST,
   LEVEL_CREATE_SUCCESS,
   LEVEL_CREATE_FAIL,
@@ -40,20 +34,17 @@ import {
 
   SEARCH_REQUEST,
   SEARCH_SUCCESS,
-  SEARCH_FAIL,  
-
+  SEARCH_FAIL,
   SUBJECT_DETAIL_REQUEST,
   SUBJECT_DETAIL_SUCCESS,
   SUBJECT_DETAIL_FAIL,
-
   LEVEL_DELETE_REQUEST,
   LEVEL_DELETE_SUCCESS,
   LEVEL_DELETE_FAIL,
-
 } from "../constants/programConstants";
 
-import Subject from '../subject';
-import Search from '../search';
+import Subject from "../subject";
+import Search from "../search";
 // export above constants from the separate file
 
 export const levelListReducer = (state = { levels: [] }, action) => {
@@ -125,11 +116,6 @@ export const levelDeleteReducer = (state = {}, action) => {
   }
 };
 
-
-
-
-
-
 export const searchListReducer = (state = { searchData: {} }, action) => {
   switch (action.type) {
     case SEARCH_REQUEST:
@@ -156,27 +142,21 @@ export const searchListReducer = (state = { searchData: {} }, action) => {
   }
 };
 
-
 export const subjectDetailReducer = (state = { subject: {} }, action) => {
-    switch (action.type) {
-      case SUBJECT_DETAIL_REQUEST:
-        return { loading: true, ...state };
-  
-      case SUBJECT_DETAIL_SUCCESS:
-        return { loading: false, subject: action.payload };
-  
-      case SUBJECT_DETAIL_FAIL:
-        return { loading: false, error: action.payload };
-  
-      default:
-        return state;
-    }
-  };
+  switch (action.type) {
+    case SUBJECT_DETAIL_REQUEST:
+      return { loading: true, ...state };
 
+    case SUBJECT_DETAIL_SUCCESS:
+      return { loading: false, subject: action.payload };
 
+    case SUBJECT_DETAIL_FAIL:
+      return { loading: false, error: action.payload };
 
-
-  
+    default:
+      return state;
+  }
+};
 
 export const levelCreateReducer = (state = {}, action) => {
   switch (action.type) {
@@ -190,20 +170,17 @@ export const levelCreateReducer = (state = {}, action) => {
       return { loading: false, error: action.payload };
 
     case LEVEL_CREATE_RESET:
-      return {}; //initial state 
+      return {}; //initial state
 
     default:
       return state;
   }
 };
 
-
-
 export const programCreateReducer = (state = {}, action) => {
   switch (action.type) {
     case PROGRAM_CREATE_REQUEST:
       return { loading: true };
-
 
     case PROGRAM_CREATE_SUCCESS:
       return { loading: false, success: true, level: action.payload };
@@ -218,7 +195,6 @@ export const programCreateReducer = (state = {}, action) => {
       return state;
   }
 };
-
 
 // marked 1
 export const levelUpdateReducer = (state = { level: {} }, action) => {
@@ -240,10 +216,6 @@ export const levelUpdateReducer = (state = { level: {} }, action) => {
   }
 };
 
-
-
-
-
 export const programUpdateReducer = (state = { program: {} }, action) => {
   switch (action.type) {
     case PROGRAM_UPDATE_REQUEST:
@@ -256,7 +228,7 @@ export const programUpdateReducer = (state = { program: {} }, action) => {
       return { loading: false, error: action.payload };
 
     case PROGRAM_UPDATE_RESET:
-      return { program : {} };
+      return { program: {} };
 
     default:
       return state;
