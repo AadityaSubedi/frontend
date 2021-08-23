@@ -32,8 +32,8 @@ function SearchBox({show, setShow, handleClose, handleShow}) {
             <Col md>
               <FloatingLabel controlId="floatingSelectGrid" label="Search by">
                 <Form.Select aria-label="Floating label select example" onChange={selectHandler}>
-                  <option value="subName">Subject Name</option>
-                  <option value="subCode">Subject Code</option>
+                  <option value="name">Subject Name</option>
+                  <option value="code">Subject Code</option>
                 </Form.Select>
               </FloatingLabel>
             </Col>
