@@ -11,7 +11,6 @@ import {
   levelCreateReducer,
 
   levelDeleteReducer,
-  levelCreateReducer,
   levelUpdateReducer,
 
   programListReducer,

@@ -6,102 +6,132 @@ import { LinkContainer } from "react-router-bootstrap";
 import { Button, Table, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { listUsers } from "../../actions/userActions";
-import {
-  listPrograms,
-  createProgram,
-
-} from "../../actions/programActions";
+import { listPrograms, createProgram } from "../../actions/programActions";
 
 import Loader from "../../components/Loader";
 import Message from "../../components/Message";
-
+import axios from "axios";
 
 function SubjectListScreen({ history, match }) {
-  const dispatch = useDispatch();
-  const programList = useSelector((state) => state.programList);
-  const { loading, error, level:{programs}, level } = programList;
+  // const dispatch = useDispatch();
+  // const programList = useSelector((state) => state.programList);
+  // const { loading, error, level:{programs}, level } = programList;
 
+  // let levelCode = match.params.code
 
-  let levelCode = match.params.code 
-
-  const programCreate = useSelector((state) => state.programCreate);
-  const {
-    loading: loadingCreate,
-    error: errorCreate,
-    success: successCreate,
-    program: createdProgram,
-  } = programCreate;
-//   const programDelete = useSelector((state) => state.programDelete);
-//   const {
-//     loading: loadingDelete,
-//     error: errorDelete,
-//     success: successDelete,
-//   } = programDelete;
+  // const programCreate = useSelector((state) => state.programCreate);
+  // const {
+  //   loading: loadingCreate,
+  //   error: errorCreate,
+  //   success: successCreate,
+  //   program: createdProgram,
+  // } = programCreate;
+  //   const programDelete = useSelector((state) => state.programDelete);
+  //   const {
+  //     loading: loadingDelete,
+  //     error: errorDelete,
+  //     success: successDelete,
+  //   } = programDelete;
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  const [show, setShow] = useState(false);
+  const [subjects, setSubjects] = useState([]);
+  const [error, setError] = useState("");
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const deleteHandler = (subjectId) => {
+    if (window.confirm("Are you sure want to delete this subject")) {
+      //   dispatch(deleteLevel(programId));
+      const fn = async () => {
+        try {
+          const { data } = await axios.delete(`/api/subject/${subjectId}`);
+          console.log(data);
+          setSubjects(data["data"]);
+        } catch (error) {
+          setError(
+            error.response && error.response.data.detail
+              ? error.response.data.detail
+              : error.message
+          );
+        }
+      };
+      fn();
 
-  const deleteHandler = (programId) => {
-    if (window.confirm("Are you sure want to delete this level")) {
-    //   dispatch(deleteLevel(programId));
+
     }
   };
   useEffect(() => {
     if (userInfo) {
-      dispatch(listPrograms(levelCode));
+      // dispatch(listPrograms(levelCode));
+      // request the list of subjects
+      const fn = async () => {
+        try {
+          const { data } = await axios.get("/api/subjects");
+          console.log(data);
+          setSubjects(data["data"]);
+        } catch (error) {
+          setError(
+            error.response && error.response.data.detail
+              ? error.response.data.detail
+              : error.message
+          );
+        }
+      };
+      fn();
     } else {
       history.push("/login");
     }
-  }, [dispatch, history, userInfo, successCreate, ]);//successDelete]);
+  }, [history, userInfo]); //successDelete]);
 
-  const createProgramHandler = () => {
+  const createSubjectHandler = () => {
     // create program here
-
-  //  this is infact, updating the level with new program added 
-    dispatch(createProgram(levelCode));
+    // post request to post a subject
+    // dispatch(createProgram(levelCode));
   };
   return (
-    levelCode === level.code &&
     <div>
       <Row className="align-items-center">
         <Col>
-          <h1> Programs in {levelCode}</h1>
+          <h1> Subjects </h1>
         </Col>
         <Col className="text-end">
-          <Button className="my-3" onClick={createProgramHandler}>
-            <i className="fas fa-plus"></i> Add program
+          <Button className="my-3" onClick={createSubjectHandler}>
+            <i className="fas fa-plus"></i> Create Subject
           </Button>
         </Col>
       </Row>
-{/* 
+      {/* 
       {loadingDelete && <Loader />}
       {errorDelete && <Message variant="danger"> {errorDelete}</Message>} */}
 
-      {loading ? (
-        <Loader />
-      ) : error ? (
+      {/*  error ? (
+        <Message variant="danger"> {error}</Message> */}
+      {console.log(error)}
+      {error ? (
         <Message variant="danger"> {error}</Message>
+      ) : !subjects.length ? (
+        <Loader/>
       ) : (
         <Table striped bordered hover responsive className="table-sm">
           <thead>
             <tr>
               <th>SN</th>
-              <th>PROGRAM NAME</th>
-              <th>PROGRAM CODE</th>
+              <th>SUBJECT NAME</th>
+              <th>SUBJECT CODE</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
-            {console.log(programs)}
-            {programs.map((program, index) => (
+            {/* {console.log(subjects)} */}
+            {subjects.map((program, index) => (
               <tr key={program._id["$oid"]}>
                 <td>{index + 1}</td>
-                <td onClick={()=>history.push(`/admin/program/${program.code}`)} style ={{'cursor':'pointer'}}>{program.name}</td>
+                <td
+                  onClick={() => history.push(`/admin/program/${program.code}`)}
+                  style={{ cursor: "pointer" }}
+                >
+                  {program.name}
+                </td>
                 <td>{program.code}</td>
                 <td>
                   <LinkContainer to={`/admin/edit/program/${program.code}`}>
@@ -123,7 +153,6 @@ function SubjectListScreen({ history, match }) {
         </Table>
       )}
     </div>
-            
   );
 }
 
