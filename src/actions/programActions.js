@@ -125,7 +125,8 @@ export const listSearchData = (searchType, searchValue) => async (dispatch) => {
   try {
 
     dispatch({ type: SEARCH_REQUEST });
-    const { data } = await axios.get(`/api/subject/${searchType}/${searchValue}`);
+    const { data } = await axios.get(`/api/search/${searchType}/${searchValue}`);
+console.log(data["data"])
     dispatch({
       type: SEARCH_SUCCESS,
       payload: data['data'],

@@ -20,11 +20,13 @@ export default function SearchScreen() {
   let history = useHistory();
 
   useEffect(() => {
+    console.log("searchType, searchValue")
     dispatch(listSearchData(searchType, searchValue));
   }, [dispatch,searchType,searchValue]);
 
   return (
     <div>
+      Search
       <h1> Search Results </h1>
       {loading ? (
         <Loader />

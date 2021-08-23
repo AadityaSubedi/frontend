@@ -48,7 +48,7 @@ export default function SubjectScreen() {
           </thead>
           <tbody>
           {subject && subject.syllabus && subject.syllabus.map((syllabus, index) => (
-            <tr key={index}>
+            <tr key={index} >
               <td>{subject.name}</td>
               <td>{subject.code}</td>
               <td>{syllabus.batch}</td>
@@ -64,8 +64,6 @@ export default function SubjectScreen() {
                 >
                   View
                 </Link>
-                  <br/>
-                <Link to="/">Edit</Link>
               </td>
             </tr>
           ))}
