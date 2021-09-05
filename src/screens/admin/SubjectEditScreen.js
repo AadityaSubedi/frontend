@@ -24,13 +24,15 @@ function SubjectEditScreen({ match, history }) {
   const [code, setCode] = useState("");
   const [remarks, setRemarks] = useState("");
   const [level, setLevel] = useState("");
-  const [syllabus, setSyllabus] = useState("");
+  const [syllabus, setSyllabus] = useState([]);
   const [image, setImage] = useState("");
+  const [batch, setBatch] = useState("");
   //   const [subjects, setSubjects] = useState([
   //     { 1: { 1: { subjects: [] }, 2: { subjects: [] } } },
   //   ]);
 
   const [imageUpload, setImageUpload] = useState(false);
+  const [newVersion, setNewVersion] = useState(false);
   // const [programs, setPrograms] = useState([]);
   // const [uploading, setUploading] = useState(false);
   //   const [options, setOptions] = useState([
@@ -60,9 +62,12 @@ function SubjectEditScreen({ match, history }) {
           const { data } = await axios.get(`/api/subject/${subjectCode}`);
           // console.log(data);
           let subject = data["data"];
+          console.log(data["data"])
           setSubject(subject);
           setName(subject.name);
           setCode(subject.code);
+          setSyllabus(subject.syllabus);
+          setBatch(subject.syllabus[0] &&subject.syllabus[0].batch )
         } catch (error) {
           setError(
             error.response && error.response.data.detail
@@ -79,11 +84,11 @@ function SubjectEditScreen({ match, history }) {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    let button = e.nativeEvent.submitter.id;
-    let revised  = true
-    if (button ==="update"){
-      revised = false
-    }
+    // let button = e.nativeEvent.submitter.id;
+    // let revised  = true
+    // if (button ==="update"){
+    let revised = newVersion;
+    // }
 
     const config = {
       headers: {
@@ -102,6 +107,7 @@ function SubjectEditScreen({ match, history }) {
     formData.append("remarks", remarks);
     formData.append("revised", revised);
 
+    !revised && formData.append("batch", batch); 
     imageUpload && formData.append("file", image);
 
     const fn = async () => {
@@ -111,7 +117,7 @@ function SubjectEditScreen({ match, history }) {
           formData,
           config
         );
-        history.push("/admin/subjects")
+        history.push("/admin/subjects");
       } catch (error) {
         setError(
           error.response && error.response.data.detail
@@ -121,7 +127,6 @@ function SubjectEditScreen({ match, history }) {
       }
     };
     fn();
-  
   };
 
   return (
@@ -165,8 +170,6 @@ function SubjectEditScreen({ match, history }) {
             {/*  */}
             {/* <input type="checkbox" id="music" name="interest" value="music">ss</input> */}
 
-
-            
             <Form.Group className="mb-3" controlId="code">
               <Form.Label>Remarks</Form.Label>
               <Form.Control
@@ -203,15 +206,35 @@ function SubjectEditScreen({ match, history }) {
                 />
               </Form.Group>
             )}
+
+            <Form.Group className="mb-3" controlId="code">
+              <Form.Label></Form.Label>
+              <Form.Check
+                type="checkbox"
+                label="Update as NEW?"
+                onChange={() => {
+                  setNewVersion(!newVersion);
+                }}
+              />
+            </Form.Group>
+
+            {!newVersion && (
+              <>
+              <Form.Label>Choose Batch</Form.Label>
+              <Form.Select onChange={(e) => {
+                    setBatch(e.target.value);
+                  }} >
+              
+              {  syllabus.map((item) => (<option>{item.batch}</option>))}
+
+                
+              </Form.Select>
+              </>
+            )}
             <Row className="mb-3">
               <Col>
                 <Button variant="primary" type="submit" id="update">
                   UPDATE
-                </Button>
-              </Col>
-              <Col>
-                <Button variant="primary" type="submit" id = "updateAsNew">
-                  UPDATE AS NEW
                 </Button>
               </Col>
             </Row>

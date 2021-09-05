@@ -7,7 +7,7 @@ import { Container } from "react-bootstrap";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import HomeScreen from "./screens/enduser/HomeScreen";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { HashRouter as Router, Route, Switch } from "react-router-dom";
 import ProgramScreen from "./screens/enduser/ProgramScreen";
 import LevelScreen from "./screens/enduser/LevelScreen";
 import SubjectScreen from "./screens/enduser/SubjectScreen";
