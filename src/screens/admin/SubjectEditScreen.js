@@ -31,6 +31,7 @@ function SubjectEditScreen({ match, history }) {
   const [practical, setPractical] = useState(0);
   const [teaching, setTeaching] = useState(0);
   const [programs, setPrograms] = useState([]);
+  const [progCode, setProgCode] = useState("");
 
   //   const [subjects, setSubjects] = useState([
   //     { 1: { 1: { subjects: [] }, 2: { subjects: [] } } },
@@ -73,14 +74,7 @@ function SubjectEditScreen({ match, history }) {
           setCode(subject.code);
           setSyllabus(subject.syllabus);
           setBatch(subject.syllabus[0] && subject.syllabus[0].batch)
-
-
-          // const { data2 } = await axios.get(`/api/programs`);
-          // // console.log(data);
-          // let programs = data2["data"];
-          // console.log(data2["data"])
-          // setPrograms(programs);
-
+          setProgCode(subject.progCode)
         } catch (error) {
           setError(
             error.response && error.response.data.detail
@@ -89,7 +83,20 @@ function SubjectEditScreen({ match, history }) {
           );
         }
       };
+
+      const fn2 = async () => {
+        try {
+          const { data } = await axios.get(`/api/programs`);
+          // console.log(data);
+          let programs = data["data"];
+          console.log(data["data"])
+          setPrograms(programs);
+        } catch (error) {
+            setPrograms([{ "code": "error" }]);
+        }
+      };
       fn();
+      fn2();
     } else {
       history.push("/login");
     }
@@ -122,6 +129,8 @@ function SubjectEditScreen({ match, history }) {
 
     formData.append("remarks", remarks);
     formData.append("revised", revised);
+    formData.append("progCode", progCode);
+
 
     !revised && formData.append("batch", batch);
     imageUpload && formData.append("file", image);
@@ -185,9 +194,10 @@ function SubjectEditScreen({ match, history }) {
               <Col>
                 <Form.Group className="mb-3" controlId="progCode">
                   <Form.Label>Program Code</Form.Label>
-                  <Form.Select >
+                      <Form.Select
+                        onChange={ (e)=>{setProgCode(e.target.value)}}>
                     
-                    {programs.map((program)=><option>program.code</option>)}
+                        {programs.map((program) => <option selected = { program.code == progCode}>{program.code}</option>)}
 
                   </Form.Select>
                 </Form.Group>
