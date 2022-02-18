@@ -1,15 +1,16 @@
 // Replace program with the LEVEL
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 import { LinkContainer } from "react-router-bootstrap";
-import { Button, Table, Row, Col } from "react-bootstrap";
+import { Form, Button, Table, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { listUsers } from "../../actions/userActions";
 import { listPrograms, createProgram } from "../../actions/programActions";
 
 import Loader from "../../components/Loader";
 import Message from "../../components/Message";
+import FormDialog from "../../components/Modal";
 import axios from "axios";
 
 function SubjectListScreen({ history, match }) {
@@ -32,12 +33,13 @@ function SubjectListScreen({ history, match }) {
   //     error: errorDelete,
   //     success: successDelete,
   //   } = programDelete;
-
+  const inputFile = useRef(null);
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
   const [subjects, setSubjects] = useState([]);
   const [error, setError] = useState("");
+  const [show, setShow] = useState(false);
 
   const deleteHandler = (subjectId) => {
     if (window.confirm("Are you sure want to delete this subject")) {
@@ -59,7 +61,7 @@ function SubjectListScreen({ history, match }) {
 
     }
   };
-  
+
   useEffect(() => {
     if (userInfo) {
       // dispatch(listPrograms(levelCode));
@@ -104,16 +106,77 @@ function SubjectListScreen({ history, match }) {
     };
     fn();
   };
+
+  const bulkSubjectHandler = (e) => {
+    // create program here
+    // post request to post a subject
+    // dispatch(createProgram(levelCode));
+    const formData = new FormData();
+
+    var file = e.target.files[0]
+    file && formData.append("file", file);
+    const fn = async () => {
+      try {
+        const { data } = await axios.post("/api/bulk/subjects", formData);
+        window.location.reload()
+
+      } catch (error) {
+        setError(
+          error.response && error.response.data.detail
+            ? error.response.data.detail
+            : error.message
+        );
+      }
+    };
+    fn();
+  };
+
+  const handleClose = (subCode=null,progCode=null,subName=null,) => {
+    setShow(false)
+    if (subCode && progCode && subName) {
+      // send the request
+      const fn = async () => {
+        const subjectData = {subCode , progCode , subName}
+        try {
+          const { data } = await axios.post("/api/subjects", subjectData);
+          window.location.reload()
+  
+        } catch (error) {
+          setError(
+            error.response && error.response.data.detail
+              ? error.response.data.detail
+              : error.message
+          );
+        }
+      };
+      fn();
+    }
+
+  };
+
   return (
     <div>
+      <FormDialog show={show} handleClose={handleClose} data={{"title":"add subject"}}>
+     </FormDialog>
       <Row className="align-items-center">
         <Col>
           <h1> Subjects </h1>
         </Col>
         <Col className="text-end">
-          <Button className="my-3" onClick={createSubjectHandler}>
+          <Button className="my-3" onClick={() => { setShow(true)}}>
             <i className="fas fa-plus"></i> Create Subject
           </Button>
+          <Button className="my-3" onClick={() => inputFile.current.click()}>
+            <i class="fa fa-upload"></i> Bulk Upload
+          </Button>
+          <input
+              style={{ display: "none" }}
+              // accept=".zip,.rar"
+              ref={inputFile}
+              onChange={bulkSubjectHandler}
+              type="file"
+            />
+
         </Col>
       </Row>
       {/* 
@@ -126,7 +189,7 @@ function SubjectListScreen({ history, match }) {
       {error ? (
         <Message variant="danger"> {error}</Message>
       ) : !subjects.length ? (
-        <Loader/>
+        <Loader />
       ) : (
         <Table striped bordered hover responsive className="table-sm">
           <thead>

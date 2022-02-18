@@ -1,6 +1,6 @@
 // Replace program with the LEVEL
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 import { LinkContainer } from "react-router-bootstrap";
 import { Button, Table, Row, Col } from "react-bootstrap";
@@ -19,8 +19,12 @@ import { render } from "@testing-library/react";
 import { ModalView } from "../../components/ModalView";
 import { Modal } from "bootstrap";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 function LevelListScreen({ history, match }) {
+
+  const inputFile = useRef(null);
+  const [error2, setError] = useState("");
   const dispatch = useDispatch();
   const levelList = useSelector((state) => state.levelList);
   const { loading, error, levels: programs } = levelList;
@@ -32,6 +36,7 @@ function LevelListScreen({ history, match }) {
     success: successCreate,
     level: createdLevel,
   } = levelCreate;
+
   const levelDelete = useSelector((state) => state.levelDelete);
   const {
     loading: loadingDelete,
@@ -64,6 +69,32 @@ function LevelListScreen({ history, match }) {
     // create program here
     dispatch(createLevel());
   };
+
+
+  const bulkProgramHandler = (e) => {
+    // create program here
+    // post request to post a subject
+    // dispatch(createProgram(levelCode));
+    const formData = new FormData();
+
+    var file = e.target.files[0]
+    formData.append("file", file);
+    const fn = async () => {
+      try {
+        const { data } = await axios.post("/api/bulk/programs", formData);
+        window.location.reload()
+
+      } catch (error) {
+        setError(
+          error.response && error.response.data.detail
+            ? error.response.data.detail
+            : error.message
+        );
+      }
+    };
+    fn();
+  };
+
   return (
     // null &&
     <div>
@@ -72,9 +103,16 @@ function LevelListScreen({ history, match }) {
           <h1> Levels</h1>
         </Col>
         <Col className="text-end">
-          <Button className="my-3" onClick={createLevelHandler}>
-            <i className="fas fa-plus"></i> Add level
+          <Button className="my-3" onClick={() => inputFile.current.click()}>
+            <i className="fas fa-upload"></i> Bulk Programs
           </Button>
+          <input
+            style={{ display: "none" }}
+            // accept=".zip,.rar"
+            ref={inputFile}
+            onChange={bulkProgramHandler}
+            type="file"
+          />
         </Col>
       </Row>
 
@@ -83,8 +121,8 @@ function LevelListScreen({ history, match }) {
 
       {loading ? (
         <Loader />
-      ) : error ? (
-        <Message variant="danger"> {error}</Message>
+      ) : error || error2 ? (
+        <Message variant="danger"> {error || error2}</Message>
       ) : (
         <Table striped bordered hover responsive className="table-sm">
           <thead>
@@ -100,9 +138,9 @@ function LevelListScreen({ history, match }) {
               <tr key={program._id["$oid"]}>
 
                 <td>{index + 1}.</td>
-              
-                <td onClick={()=>history.push(`/admin/programs/${program.code}`)} style ={{'cursor':'pointer'}}>{program.name}</td>
-                
+
+                <td onClick={() => history.push(`/admin/programs/${program.code}`)} style={{ 'cursor': 'pointer' }}>{program.name}</td>
+
                 <td>{program.code}</td>
 
                 <td>
@@ -112,11 +150,10 @@ function LevelListScreen({ history, match }) {
                     </Button>
                   </LinkContainer>
 
-                  <Button variant="danger" className="btn-sm">
-                    <i
-                      className="fas fa-trash"
-                      onClick={() => deleteHandler(program._id["$oid"])}
-                    ></i>
+                  <Button variant="danger" className="btn-sm" onClick={() => deleteHandler(program._id["$oid"])}>
+                    <i className="fas fa-trash">
+
+                    </i>
                   </Button>
                 </td>
               </tr>

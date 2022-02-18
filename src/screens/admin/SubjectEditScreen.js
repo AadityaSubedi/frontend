@@ -27,6 +27,11 @@ function SubjectEditScreen({ match, history }) {
   const [syllabus, setSyllabus] = useState([]);
   const [image, setImage] = useState("");
   const [batch, setBatch] = useState("");
+  const [theory, setTheory] = useState(0);
+  const [practical, setPractical] = useState(0);
+  const [teaching, setTeaching] = useState(0);
+  const [programs, setPrograms] = useState([]);
+
   //   const [subjects, setSubjects] = useState([
   //     { 1: { 1: { subjects: [] }, 2: { subjects: [] } } },
   //   ]);
@@ -67,7 +72,15 @@ function SubjectEditScreen({ match, history }) {
           setName(subject.name);
           setCode(subject.code);
           setSyllabus(subject.syllabus);
-          setBatch(subject.syllabus[0] &&subject.syllabus[0].batch )
+          setBatch(subject.syllabus[0] && subject.syllabus[0].batch)
+
+
+          // const { data2 } = await axios.get(`/api/programs`);
+          // // console.log(data);
+          // let programs = data2["data"];
+          // console.log(data2["data"])
+          // setPrograms(programs);
+
         } catch (error) {
           setError(
             error.response && error.response.data.detail
@@ -103,11 +116,14 @@ function SubjectEditScreen({ match, history }) {
 
     formData.append("name", name);
     formData.append("code", code);
+    formData.append("theory", theory);
+    formData.append("practical", practical);
+    formData.append("teaching", teaching);
 
     formData.append("remarks", remarks);
     formData.append("revised", revised);
 
-    !revised && formData.append("batch", batch); 
+    !revised && formData.append("batch", batch);
     imageUpload && formData.append("file", image);
 
     const fn = async () => {
@@ -148,20 +164,78 @@ function SubjectEditScreen({ match, history }) {
               <Form.Label>Name</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Level Name"
+                placeholder="Subject Name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="code">
-              <Form.Label>Code</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Level Code"
-                value={code}
-                onChange={(e) => setCode(e.target.value)}
-              />
-            </Form.Group>
+            <Row>
+              <Col>
+                <Form.Group className="mb-3" controlId="subCode">
+                  <Form.Label>Subject Code</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Subject Code"
+                    value={code}
+                    onChange={(e) => setCode(e.target.value)}
+                    disabled
+                  />
+                </Form.Group>
+              </Col>
+              <Col>
+                <Form.Group className="mb-3" controlId="progCode">
+                  <Form.Label>Program Code</Form.Label>
+                  <Form.Select >
+                    
+                    {programs.map((program)=><option>program.code</option>)}
+
+                  </Form.Select>
+                </Form.Group>
+
+
+
+                
+              </Col>
+            </Row>
+
+            <Row>
+              <Col>
+                <Form.Group className="mb-3" controlId="theory">
+                  <Form.Label>Theory</Form.Label>
+                  <Form.Control
+                    type="number"
+                    placeholder="Theory"
+                    value={theory}
+                    onChange={(e) => setTheory(e.target.value)}
+                  />
+                </Form.Group>
+              </Col>
+              <Col>
+                <Form.Group className="mb-3" controlId="practical">
+                  <Form.Label>Practical</Form.Label>
+                  <Form.Control
+                    type="number"
+                    placeholder="Practical"
+                    value={practical}
+                    onChange={(e) => setPractical(e.target.value)}
+                  />
+                </Form.Group>
+              </Col>
+              <Col>
+                <Form.Group className="mb-3" controlId="hour">
+                  <Form.Label>Teaching hour</Form.Label>
+                  <Form.Control
+                    type="number"
+                    placeholder="Teaching hour"
+                    value={teaching}
+                    onChange={(e) => setTeaching(e.target.value)}
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+
+
+
 
             {/* render this conditionally  */}
 
@@ -220,15 +294,15 @@ function SubjectEditScreen({ match, history }) {
 
             {!newVersion && (
               <>
-              <Form.Label>Choose Batch</Form.Label>
-              <Form.Select onChange={(e) => {
-                    setBatch(e.target.value);
-                  }} >
-              
-              {  syllabus.map((item) => (<option>{item.batch}</option>))}
+                <Form.Label>Choose Batch</Form.Label>
+                <Form.Select onChange={(e) => {
+                  setBatch(e.target.value);
+                }} >
 
-                
-              </Form.Select>
+                  {syllabus.map((item) => (<option>{item.batch}</option>))}
+
+
+                </Form.Select>
               </>
             )}
             <Row className="mb-3">
