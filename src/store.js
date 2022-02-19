@@ -15,6 +15,8 @@ levelCreateReducer,
   programCreateReducer,
   programDetailReducer,
   programUpdateReducer,
+  subjectBulkCreateReducer,
+  syllabusBulkCreateReducer,
 
 } from "./reducers/programReducers";
 
@@ -41,6 +43,9 @@ const reducer = combineReducers({
   userLogin: userLoginReducer,
   userList: userListReducer,
   levelDelete: levelDeleteReducer,
+
+  bulkSyllabusCreate: syllabusBulkCreateReducer,
+  bulkSubjectCreate: subjectBulkCreateReducer,
 });
 
 

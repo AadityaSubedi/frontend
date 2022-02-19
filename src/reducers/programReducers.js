@@ -41,6 +41,10 @@ import {
   LEVEL_DELETE_REQUEST,
   LEVEL_DELETE_SUCCESS,
   LEVEL_DELETE_FAIL,
+
+  BULK_CREATE_REQUEST,
+  BULK_CREATE_SUCCESS,
+  BULK_CREATE_FAIL,
 } from "../constants/programConstants";
 
 // export above constants from the separate file
@@ -220,6 +224,40 @@ export const programUpdateReducer = (state = { program: {} }, action) => {
     case PROGRAM_UPDATE_RESET:
       return { program: {} };
 
+    default:
+      return state;
+  }
+};
+
+
+export const syllabusBulkCreateReducer = (state = {}, action) => {
+  switch (action.type) {
+    case BULK_CREATE_REQUEST:
+      return { loading: true };
+
+    case BULK_CREATE_SUCCESS:
+      return { loading: false, success: true, level: action.payload };
+
+    case BULK_CREATE_FAIL:
+      return { loading: false, error: action.payload };
+      
+    default:
+      return state;
+  }
+};
+
+
+export const subjectBulkCreateReducer = (state = {}, action) => {
+  switch (action.type) {
+    case BULK_CREATE_REQUEST:
+      return { loading: true };
+
+    case BULK_CREATE_SUCCESS:
+      return { loading: false, success: true, level: action.payload };
+
+    case BULK_CREATE_FAIL:
+      return { loading: false, error: action.payload };
+      
     default:
       return state;
   }

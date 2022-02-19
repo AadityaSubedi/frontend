@@ -20,6 +20,9 @@ import ProgramListScreen from "./screens/admin/ProgramListScreen";
 import ProgramEditScreen from "./screens/admin/ProgramEditScreen";
 import SubjectListScreen from "./screens/admin/SubjectListScreen";
 import SubjectEditScreen from "./screens/admin/SubjectEditScreen";
+import SubjectBulkScreen from "./screens/admin/SubjectBulkScreen";
+import SyllabusBulkScreen from "./screens/admin/SyllabusBulkScreen";
+
 
 function App() {
   return (
@@ -42,8 +45,12 @@ function App() {
 
             <Route path="/subject/:code/:batch" component={SyllabusScreen} exact />
             <Route path="/level/:level" component={LevelScreen} exact />
+            
             <Route path="/admin/users" component={UserListScreen} exact />
             <Route path="/admin/levels" component={LevelListScreen} exact />
+            
+            <Route path="/bulk/syllabus/" component={SyllabusBulkScreen} exact />
+            <Route path="/bulk/subject" component={SubjectBulkScreen} exact />
             <Route
               path="/admin/programs/:code"
               component={ProgramListScreen}

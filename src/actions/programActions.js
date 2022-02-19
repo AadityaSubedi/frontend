@@ -58,6 +58,10 @@ PROGRAM_UPDATE_RESET,
   PROGRAM_DELETE_SUCCESS,
   PROGRAM_DELETE_FAIL,
 
+  BULK_CREATE_REQUEST,
+  BULK_CREATE_SUCCESS,
+  BULK_CREATE_FAIL,
+
 } from "../constants/programConstants";
 
 
@@ -399,7 +403,7 @@ export const updateProgram = (program) => async (dispatch, getState) => {
     }
 
     const { data } = await axios.put(
-      `/api/program/${program._id["$oid"]}`,
+      `api/program/${program._id["$oid"]}`,
       formData,
       config
     );
@@ -416,6 +420,93 @@ export const updateProgram = (program) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: PROGRAM_UPDATE_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+
+
+
+export const createBulkSyllabus = ({subLevel, datafile, syllabus}) => async (dispatch, getState={}) => {
+  try {
+    dispatch({
+      type: BULK_CREATE_REQUEST,
+    });
+
+    // const {
+    //   userLogin: { userInfo },
+    // } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    };
+
+    const formData = new FormData();
+    formData.append('level', subLevel);
+    formData.append("csv_file", datafile);
+    for (const csv in syllabus){
+      formData.append([csv.name],csv);
+    }
+    
+    console.log("after")
+    const { data } = await axios.post(
+      `api/bulk/syllabus`,
+      formData,
+      config
+    );
+
+    dispatch({
+      type: BULK_CREATE_SUCCESS,
+      payload: formData,
+    });
+  } catch (error) {
+    dispatch({
+      type: BULK_CREATE_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+
+export const createBulkSubject = ({ datafile }) => async (dispatch, getState={}) => {
+  try {
+    dispatch({
+      type: BULK_CREATE_REQUEST,
+    });
+
+    // const {
+    //   userLogin: { userInfo },
+    // } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    };
+
+    const formData = new FormData();
+    formData.append("csv_file", datafile);
+    console.log("after")
+    const { data } = await axios.post(
+      `api/bulk/subject`,
+      formData,
+      config
+    );
+
+    dispatch({
+      type: BULK_CREATE_SUCCESS,
+      payload: formData,
+    });
+  } catch (error) {
+    dispatch({
+      type: BULK_CREATE_FAIL,
       payload:
         error.response && error.response.data.detail
           ? error.response.data.detail
